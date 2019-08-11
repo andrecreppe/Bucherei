@@ -1,31 +1,26 @@
 import java.sql.*;
 
-class Database
-{
+public class Database {
     private String url, user, passwd;
     private Connection con;
 
-    Database()
-    {
-        try 
-        {
+    Database() {
+        try {
             //Class.forName("com.mysql.jdbc.Driver");
-
-            url ="jdbc:mysql://localhost:3306/castro";
+            url = "jdbc:mysql://localhost:3306/castro";
             user = "root";
             passwd = "";
 
             con = DriverManager.getConnection(url, user, passwd);
-        } 
-        catch(Exception e) 
-        {
+
+            System.out.println("foi");
+        } catch (Exception e) {
+            System.out.println("Erro na conexão!");
             e.printStackTrace();
         }
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         new Database();
-        System.out.println("foi");
     }
 }
