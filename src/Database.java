@@ -1,4 +1,5 @@
 import java.sql.*;
+import javax.swing.*;
 
 public class Database {
     private String url, user, passwd;
@@ -6,21 +7,20 @@ public class Database {
 
     Database() {
         try {
-            //Class.forName("com.mysql.jdbc.Driver");
-            url = "jdbc:mysql://localhost:3306/castro";
+            url = "jdbc:mysql://localhost:3306/castro?useTimezone=true&serverTimezone=UTC";
             user = "root";
-            passwd = "";
+            passwd = "060802";
 
             con = DriverManager.getConnection(url, user, passwd);
-
-            System.out.println("foi");
         } catch (Exception e) {
-            System.out.println("Erro na conexão!");
-            e.printStackTrace();
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na coneção: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
         }
     }
 
-    public static void main(String args[]) {
-        new Database();
-    }
+//    public static void main(String args[]) {
+//        new Database();
+//    }
 }
