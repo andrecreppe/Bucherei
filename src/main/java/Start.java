@@ -1,15 +1,18 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.rmi.server.ExportException;
+import java.util.ResourceBundle;
 
 public class Start extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
-    //private ImageIcon image;
+    private BufferedImage image;
 
     //UI Objects
     private JProgressBar loading;
-    private JLabel lblUser, lblPassword;
+    private JLabel lblUser, lblPassword, testeeeeee;
     private JTextField txtUser, txtPassword;
     private JButton btnClear, btnLogin;
 
@@ -28,11 +31,20 @@ public class Start extends JFrame implements ActionListener {
         loading.setBounds(wConfig.getWidth() - 600, wConfig.getHeight() - 200, wConfig.getWidth() / 2, 30);
         add(loading);
 
+        try {
+            image = ImageIO.read(getClass().getResource("/images/logo.png"));
+            testeeeeee = new JLabel(new ImageIcon(image));
+            testeeeeee.setBounds(10, 10, 200, 200);
+            add(testeeeeee);
+        } /* Ash */ catch /* um */ (Exception e) {
+            System.err.println("Gotta catch 'em all");
+        }
+
         //Show
         setVisible(true);
 
         //Load the aplication
-        //ProgressBar();
+        ProgressBar();
         LoginUI();
     }
 
