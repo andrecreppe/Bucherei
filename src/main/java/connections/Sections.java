@@ -1,4 +1,4 @@
-package Connections;
+package connections;
 
 import java.util.*;
 import javax.swing.*;
@@ -39,22 +39,27 @@ public class Sections {
         this.active = a;
     }
 
-    //GET's
-    public String getName() {
-        return this.name;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public boolean getActive() {
-        return this.active;
-    }
-
     //SQL Operations
     public void Insert() {
-
+//        sql = "";
+//
+//        try {
+//            sql = "INSERT INTO sections VALUES(DEFAULT, ?, ?, ?)";
+//
+//            querry = localhost.GetConnection().prepareStatement(sql);
+//            querry.setString(1, name);
+//            querry.setString(2, description);
+//            querry.setBoolean(3, active);
+//
+//            querry.execute();
+//
+//            querry.close();
+//        } catch (Exception e) {
+//            String msg = "Oops, aconteceu algum erro!";
+//            msg += "\n\nErro na pesquisa: " + e.getMessage();
+//
+//            JOptionPane.showMessageDialog(null, msg);
+//        }
     }
 
     public void Update(int id) {
