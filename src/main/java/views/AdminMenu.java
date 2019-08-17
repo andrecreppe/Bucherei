@@ -16,6 +16,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     private WindowConfiguration wConfig;
     private String userName;
     private BufferedImage imageLoader;
+    private Start startMenu;
 
     //UI Objects
     private JLabel creppe, dea;
@@ -24,14 +25,15 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     private JMenuItem viewBooks, viewSections, viewUsers, viewRented;
     private JMenuItem newBook, newSection, newUser, newRent;
 
-    public AdminMenu(String name) {
+    public AdminMenu(String name, Start login) {
         //Window setup
         super("Bücherei: " + name + " (admin)");
         setLayout(null);
         setResizable(false);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         userName = name;
+        startMenu = login;
 
         //Window size
         wConfig = new WindowConfiguration();
@@ -102,11 +104,11 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         about.addMenuListener(this);
         bar.add(about);
 
-//        //Menu 'logout'
-//        logout = new JMenu("Logout");
-//        logout.setMnemonic('O');
-//        logout.addMenuListener(this);
-//        bar.add(logout);
+        //Menu 'logout'
+        logout = new JMenu("Logout");
+        logout.setMnemonic('O');
+        logout.addMenuListener(this);
+        bar.add(logout);
     }
 
     public void Dashboard() {
@@ -147,7 +149,8 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         } else if(e.getSource() == viewUsers) {
 
         } else if(e.getSource() == newUser) {
-
+            new NewUser(this);
+            setVisible(false);
         } else if(e.getSource() == viewRented) {
 
         } else if(e.getSource() == newRent) {
@@ -160,12 +163,13 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             System.out.println("os brabo");
             DeveloperInfo();
         }
-//        else if(e.getSource() == logout) {
-//            int option = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?");
-//            if(option == JOptionPane.YES_OPTION) {
-//                dispose();
-//            }
-//        }
+        else if(e.getSource() == logout) {
+            int option = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?");
+            if(option == JOptionPane.YES_OPTION) {
+                startMenu.setVisible(true);
+                dispose();
+            }
+        }
     }
 
     public void menuDeselected(MenuEvent e) {
@@ -175,6 +179,6 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     }
 
     public static void main(String[] args) {
-        new AdminMenu("Falsiano Fakeson");
+        new AdminMenu("Falsiano Fakeson", null);
     }
 }

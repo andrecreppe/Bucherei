@@ -12,7 +12,7 @@ public class Database {
             database = "castro";
             url = "jdbc:mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC";
             user = "root";
-            passwd = "guerra123";
+            passwd = "060802";
 
             con = null;
             con = DriverManager.getConnection(url, user, passwd);

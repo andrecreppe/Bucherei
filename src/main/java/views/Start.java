@@ -1,6 +1,7 @@
+package views;
+
 import connections.*;
 import tools.*;
-import views.*;
 
 import javax.imageio.*;
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class Start extends JFrame implements ActionListener {
     public Start() {
         //Window setup
         super("Bücherei");
-        setLayout(null); //Grid layout
+        setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -153,8 +154,10 @@ public class Start extends JFrame implements ActionListener {
             return;
         }
 
+        ClearFields();
+
         if (resp.get(0).equals("1")) {//Admin
-            new AdminMenu(resp.get(1) + " " + resp.get(2));
+            new AdminMenu(resp.get(1) + " " + resp.get(2), this);
         } else { //Normal user
             System.out.println("Normal guy");
         }
