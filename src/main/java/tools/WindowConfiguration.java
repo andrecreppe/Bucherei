@@ -1,9 +1,11 @@
+package tools;
+
 import java.awt.*;
 
 public class WindowConfiguration {
     private int width, height, x, y;
 
-    WindowConfiguration() {
+    public WindowConfiguration() {
         width = 800;
         height = 500;
 

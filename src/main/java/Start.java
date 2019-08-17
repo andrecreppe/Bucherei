@@ -1,6 +1,6 @@
-import connections.Users;
-import tools.MD5;
-import views.AdminMenu;
+import connections.*;
+import tools.*;
+import views.*;
 
 import javax.imageio.*;
 import javax.swing.*;
@@ -20,10 +20,10 @@ public class Start extends JFrame implements ActionListener {
     private JPasswordField txtPassword;
     private JButton btnClear, btnLogin;
 
-    Start() {
+    public Start() {
         //Window setup
         super("Bücherei");
-        setLayout(null);
+        setLayout(null); //Grid layout
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -150,10 +150,13 @@ public class Start extends JFrame implements ActionListener {
             return;
         }
 
-        if (resp.get(0).equals("1")) //Admin
-            new AdminMenu();
-        else //Normal user
+        if (resp.get(0).equals("1")) {//Admin
+            new AdminMenu(resp.get(1) + " " + resp.get(2));
+        } else { //Normal user
             System.out.println("Normal guy");
+        }
+
+        setVisible(false);
     }
 
     public void actionPerformed(ActionEvent e) {

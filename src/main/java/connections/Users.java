@@ -137,6 +137,10 @@ public class Users {
         }
     }
 
+    public ArrayList<String> Select() {
+        return new ArrayList<String>();
+    }
+
     public ArrayList<String> Login() {
         sql = "";
         result = null;
@@ -153,6 +157,8 @@ public class Users {
             search = new ArrayList<String>();
             while (result.next()) {
                 search.add(result.getString("admin"));
+                search.add(result.getString("name"));
+                search.add(result.getString("surname"));
             }
 
             querry.close();
