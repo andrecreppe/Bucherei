@@ -1,9 +1,8 @@
 package connections;
 
 import javax.swing.*;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.sql.*;
+import java.util.*;
 
 public class Users {
     //Fields Variables
@@ -138,7 +137,68 @@ public class Users {
     }
 
     public ArrayList<String> Select() {
-        return new ArrayList<String>();
+        sql = "";
+        result = null;
+        search = null;
+
+        try {
+            sql = "SELECT * FROM users ORDER BY name";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("name"));
+                search.add(result.getString("surname"));
+                search.add(result.getString("cpf"));
+                search.add(result.getString("email"));
+                search.add(result.getString("icon"));
+                search.add(result.getString("admin"));
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
+    public ArrayList<String> Select(String nome) {
+        sql = "";
+        result = null;
+        search = null;
+
+        try {
+            sql = "SELECT * FROM users WHERE name=? ORDER BY name";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setString(1, nome);
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("name"));
+                search.add(result.getString("surname"));
+                search.add(result.getString("cpf"));
+                search.add(result.getString("email"));
+                search.add(result.getString("icon"));
+                search.add(result.getString("admin"));
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
     }
 
     public ArrayList<String> Login() {

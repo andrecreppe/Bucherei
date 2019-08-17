@@ -41,74 +41,83 @@ public class Sections {
 
     //SQL Operations
     public void Insert() {
-//        sql = "";
-//
-//        try {
-//            sql = "INSERT INTO sections VALUES(DEFAULT, ?, ?, ?)";
-//
-//            querry = localhost.GetConnection().prepareStatement(sql);
-//            querry.setString(1, name);
-//            querry.setString(2, description);
-//            querry.setBoolean(3, active);
-//
-//            querry.execute();
-//
-//            querry.close();
-//        } catch (Exception e) {
-//            String msg = "Oops, aconteceu algum erro!";
-//            msg += "\n\nErro na pesquisa: " + e.getMessage();
-//
-//            JOptionPane.showMessageDialog(null, msg);
-//        }
-    }
-
-    public void Update(int id) {
-
-    }
-
-    public void Delete(int id) {
-
-    }
-
-    public ArrayList<String> Select(String name) {
         sql = "";
-        result = null;
-        search = null;
 
         try {
-            sql = "SELECT * FROM sections WHERE name LIKE ? AND active=true ORDER BY name";
+            sql = "INSERT INTO sections VALUES(DEFAULT, ?, ?, ?)";
 
             querry = localhost.GetConnection().prepareStatement(sql);
-            querry.setString(1, '%' + name);
-            result = querry.executeQuery();
+            querry.setString(1, name);
+            querry.setString(2, description);
+            querry.setBoolean(3, active);
 
-            search = new ArrayList<String>();
-            while (result.next()) {
-                search.add(result.getString("name"));
-                search.add(result.getString("description"));
-            }
+            querry.execute();
 
             querry.close();
         } catch (Exception e) {
             String msg = "Oops, aconteceu algum erro!";
-            msg += "\n\nErro na pesquisa: " + e.getMessage();
+            msg += "\n\nErro na inclusão: " + e.getMessage();
 
             JOptionPane.showMessageDialog(null, msg);
         }
-
-        return search;
     }
 
-    public ArrayList<String> Select(boolean active) {
+    public void Update(int id) {
+        sql = "";
+
+        try {
+            sql = "UPDATE sections SET " +
+                    "name=?, description=?, active=?, email=?, password=?, icon=?, admin=?" +
+                    "WHERE id=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setString(1, name);
+            querry.setString(2, description);
+            querry.setBoolean(3, active);
+            querry.setInt(4, id);
+
+            querry.execute();
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na alteração: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+    }
+
+    public void Delete(int id) {
+        sql = "";
+
+        try {
+            sql = "DELETE FROM sections WHERE id=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setInt(1, id);
+
+            querry.execute();
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na exclusão: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+    }
+
+    public ArrayList<String> Select(String name, boolean activve) {
         sql = "";
         result = null;
         search = null;
 
         try {
-            sql = "SELECT * FROM sections WHERE active=? ORDER BY name";
+            sql = "SELECT * FROM sections WHERE name LIKE ? AND active=? ORDER BY name";
 
             querry = localhost.GetConnection().prepareStatement(sql);
-            querry.setString(1, "" + active);
+            querry.setString(1, '%' + name);
+            querry.setBoolean(1, activve);
             result = querry.executeQuery();
 
             search = new ArrayList<String>();

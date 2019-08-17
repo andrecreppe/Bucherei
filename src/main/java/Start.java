@@ -47,7 +47,10 @@ public class Start extends JFrame implements ActionListener {
             logo.setBounds(40, 10, 720, 240);
             add(logo);
         } /* Ash */ catch /* um */ (Exception e) {
-            System.err.println("Gotta catch 'em all");
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro no carregamento da imagem: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
         }
 
         //Show

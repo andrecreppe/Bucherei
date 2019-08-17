@@ -36,7 +36,13 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         //Window size
         wConfig = new WindowConfiguration();
         setBounds(wConfig.getCoordinateX(), wConfig.getCoordinateY(), wConfig.getWidth(), wConfig.getHeight());
+        
+        NavigationBar();
 
+        setVisible(true);
+    }
+    
+    public void NavigationBar() {
         //MenuBar setup
         bar = new JMenuBar();
         setJMenuBar(bar);
@@ -101,8 +107,6 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
 //        logout.setMnemonic('O');
 //        logout.addMenuListener(this);
 //        bar.add(logout);
-
-        setVisible(true);
     }
 
     public void Dashboard() {
@@ -124,7 +128,30 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             dea.setBounds(440, 10, 300, 300);
             add(dea);
         } /* Ash */ catch /* um */ (Exception e) {
-            System.err.println("Gotta catch 'em all");
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro no carregamento da imagem: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == viewBooks) {
+            
+        } else if(e.getSource() == newBook) {
+            
+        } else if(e.getSource() == viewSections) {
+
+        } else if(e.getSource() == newSection) {
+
+        } else if(e.getSource() == viewUsers) {
+
+        } else if(e.getSource() == newUser) {
+
+        } else if(e.getSource() == viewRented) {
+
+        } else if(e.getSource() == newRent) {
+
         }
     }
 
@@ -147,10 +174,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     public void menuCanceled(MenuEvent e) {
     }
 
-    public void actionPerformed(ActionEvent e) {
-    }
-
     public static void main(String[] args) {
-        new AdminMenu("TESTE FAKE");
+        new AdminMenu("Falsiano Fakeson");
     }
 }
