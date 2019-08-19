@@ -10,7 +10,7 @@ public class Sections {
     private boolean active;
 
     //SQL Variables
-    private String sql;
+    private String sql, msg;
     private ResultSet result;
     private ArrayList<String> search;
     private PreparedStatement querry;
@@ -42,6 +42,7 @@ public class Sections {
     //SQL Operations
     public void Insert() {
         sql = "";
+        msg = "";
 
         try {
             sql = "INSERT INTO sections VALUES(DEFAULT, ?, ?, ?)";
@@ -54,16 +55,19 @@ public class Sections {
             querry.execute();
 
             querry.close();
-        } catch (Exception e) {
-            String msg = "Oops, aconteceu algum erro!";
-            msg += "\n\nErro na inclusão: " + e.getMessage();
 
-            JOptionPane.showMessageDialog(null, msg);
+            msg = "Seção inserida com sucesso!";
+        } catch (Exception e) {
+            msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na inclusão: " + e.getMessage();
         }
+
+        JOptionPane.showMessageDialog(null, msg);
     }
 
     public void Update(int id) {
         sql = "";
+        msg = "";
 
         try {
             sql = "UPDATE sections SET " +
@@ -79,12 +83,14 @@ public class Sections {
             querry.execute();
 
             querry.close();
-        } catch (Exception e) {
-            String msg = "Oops, aconteceu algum erro!";
-            msg += "\n\nErro na alteração: " + e.getMessage();
 
-            JOptionPane.showMessageDialog(null, msg);
+            msg = "Seção alterada com sucesso!";
+        } catch (Exception e) {
+            msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na alteração: " + e.getMessage();
         }
+
+        JOptionPane.showMessageDialog(null, msg);
     }
 
     public void Delete(int id) {
@@ -99,12 +105,14 @@ public class Sections {
             querry.execute();
 
             querry.close();
-        } catch (Exception e) {
-            String msg = "Oops, aconteceu algum erro!";
-            msg += "\n\nErro na exclusão: " + e.getMessage();
 
-            JOptionPane.showMessageDialog(null, msg);
+            msg = "Seção deletada com sucesso!";
+        } catch (Exception e) {
+            msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na exclusão: " + e.getMessage();
         }
+
+        JOptionPane.showMessageDialog(null, msg);
     }
 
     public ArrayList<String> Select(String name, boolean activve) {

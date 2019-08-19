@@ -1,24 +1,29 @@
 package views;
 
+import connections.*;
 import tools.*;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.text.*;
+import java.awt.event.*;
+
+//SET FONTTTTTTTTTTTTTTTT
 
 public class NewUser extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
     private AdminMenu adminMenu;
+    private int incY, firstY;
 
     //UI Objects
     private JLabel lblTitle, lblName, lblSurname, lblCPF, lblEmail, lblPassword, lblIcon, lblAdmin;
     private JTextField txtName, txtSurname, txtEmail;
-    private JFormattedTextField txtCPF;
+    private JFormattedTextField mskCPF;
+    private MaskFormatter mskMaker;
     private JPasswordField txtPassword;
     private JComboBox cmbIcons;
     private JRadioButton radAdmin, radUser;
+    private ButtonGroup radioGroup;
     private JButton btnAdd, btnClear, btnCancel;
 
     public NewUser(AdminMenu menu) {
@@ -34,34 +39,208 @@ public class NewUser extends JFrame implements ActionListener {
 
         adminMenu = menu;
 
+        firstY = 30;
+        incY = 50;
+
         InitializeUI();
 
         setVisible(true);
     }
 
     private void InitializeUI() {
-        lblName = new JLabel("Nome");
-        lblName.setBounds(300, 20, 50, 30);
-        add(lblName);
+        try {
+            lblName = new JLabel("*Nome:");
+            lblName.setBounds(300, firstY, 100, 30);
+            add(lblName);
 
-        txtName = new JTextField();
-        txtName.setBounds(350, 20, 200, 30);
-        add(txtName);
+            txtName = new JTextField();
+            txtName.setBounds(350, firstY, 200, 30);
+            add(txtName);
 
-        lblSurname = new JLabel("Sobrenome");
-        lblSurname.setBounds(250, 70, 50, 30);
-        add(lblSurname);
+            firstY += incY;
 
-        txtSurname = new JTextField();
-        txtSurname.setBounds(350, 70, 200, 30);
-        add(txtSurname);
+            lblSurname = new JLabel("*Sobrenome:");
+            lblSurname.setBounds(270, firstY, 100, 30);
+            add(lblSurname);
+
+            txtSurname = new JTextField();
+            txtSurname.setBounds(350, firstY, 200, 30);
+            add(txtSurname);
+
+            firstY += incY;
+
+            lblCPF = new JLabel("*CPF:");
+            lblCPF.setBounds(310, firstY, 100, 30);
+            add(lblCPF);
+
+            mskCPF = new JFormattedTextField();
+            mskCPF.setBounds(350, firstY, 200, 30);
+            add(mskCPF);
+
+            mskMaker = new MaskFormatter("###.###.###-##");
+            mskMaker.setPlaceholderCharacter('_');
+            mskMaker.install(mskCPF);
+
+            firstY += incY;
+
+            lblEmail = new JLabel("*Email:");
+            lblEmail.setBounds(300, firstY, 100, 30);
+            add(lblEmail);
+
+            txtEmail = new JTextField();
+            txtEmail.setBounds(350, firstY, 200, 30);
+            add(txtEmail);
+
+            firstY += incY;
+
+            lblPassword = new JLabel("*Senha:");
+            lblPassword.setBounds(295, firstY, 100, 30);
+            add(lblPassword);
+
+            txtPassword = new JPasswordField();
+            txtPassword.setBounds(350, firstY, 200, 30);
+            add(txtPassword);
+
+            firstY += incY;
+
+            lblIcon = new JLabel("*Ícone:");
+            lblIcon.setBounds(300, firstY, 100, 30);
+            add(lblIcon);
+
+            cmbIcons = new JComboBox();
+            cmbIcons.setBounds(350, firstY, 200, 30);
+            cmbIcons.addItem("Nenhum");
+            cmbIcons.addItem("Astronauta");
+            cmbIcons.addItem("Gatinho");
+            add(cmbIcons);
+
+            firstY += incY;
+
+            lblAdmin = new JLabel("*Admin?");
+            lblAdmin.setBounds(295, firstY, 100, 30);
+            add(lblAdmin);
+
+            radAdmin = new JRadioButton("Admin");
+            radAdmin.setBounds(370, firstY, 70, 30);
+            add(radAdmin);
+            radUser = new JRadioButton("User");
+            radUser.setBounds(450, firstY, 100, 30);
+            add(radUser);
+
+            radioGroup = new ButtonGroup();
+            radioGroup.add(radAdmin);
+            radioGroup.add(radUser);
+
+            firstY += incY + 25;
+
+            btnAdd = new JButton("Adicionar");
+            btnAdd.setBounds(220, firstY, 100, 30);
+            btnAdd.setMnemonic('A');
+            btnAdd.addActionListener(this);
+            add(btnAdd);
+
+            btnClear = new JButton("Limpar");
+            btnClear.setBounds(340, firstY, 100, 30);
+            btnClear.setMnemonic('L');
+            btnClear.addActionListener(this);
+            add(btnClear);
+
+            btnCancel = new JButton("Cancelar");
+            btnCancel.setBounds(460, firstY, 100, 30);
+            btnCancel.setMnemonic('C');
+            btnCancel.addActionListener(this);
+            add(btnCancel);
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro no setup dos campos de cadasrtro: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        ClearFields();
+    }
+
+    private void ClearFields() {
+        txtName.setText("");
+        txtSurname.setText("");
+        mskCPF.setText("");
+        txtEmail.setText("");
+        txtPassword.setText("");
+        cmbIcons.setSelectedIndex(-1);
+        radioGroup.clearSelection();
+    }
+
+    private void Exit() {
+        adminMenu.setVisible(true);
+        dispose();
+    }
+
+    private void AddNewUser() {
+        if (AllFieldsOK()) {
+            Users inclusion = new Users();
+            MD5 crypto = new MD5();
+            String cpf;
+
+            inclusion.setName(txtName.getText());
+            inclusion.setSurname(txtSurname.getText());
+            inclusion.setEmail(txtEmail.getText());
+            inclusion.setIcon(cmbIcons.getSelectedIndex());
+
+            inclusion.setPassword(crypto.GenerateHash(txtPassword.getText()));
+
+            cpf = mskCPF.getText().replace(".", "");
+            cpf = cpf.replace("-", "");
+            inclusion.setCPF(cpf);
+
+            if (radAdmin.isSelected()) {
+                inclusion.setAdmin(true);
+            } else {
+                inclusion.setAdmin(false);
+            }
+
+            inclusion.Insert();
+
+            Exit();
+        } else {
+            JOptionPane.showMessageDialog(null, "Existem campos sem preencher!\nPreencha-os.");
+        }
+    }
+
+    private boolean AllFieldsOK() {
+        boolean verify = true;
+        String cpf;
+
+        if(txtName.getText().length() < 1) {
+            verify = false;
+        } else if (txtSurname.getText().length() < 1) {
+            verify = false;
+        } else if (txtEmail.getText().length() < 1) {
+            verify = false;
+        } else if (txtPassword.getText().length() < 1) {
+            verify = false;
+        } else if (cmbIcons.getSelectedIndex() < 0) {
+            verify = false;
+        } else if (!radAdmin.isSelected() || radUser.isSelected()) {
+            verify = false;
+        }
+
+        cpf = mskCPF.getText().replace(".", "");
+        cpf = cpf.replace("-", "");
+
+        if(cpf.length() != 11) {
+            verify = false;
+        }
+
+        return verify;
     }
 
     public void actionPerformed(ActionEvent e) {
-
-    }
-
-    public static void main(String[] args) {
-        new NewUser(null);
+        if (e.getSource() == btnAdd) {
+            AddNewUser();
+        } else if (e.getSource() == btnClear) {
+            ClearFields();
+        } else if (e.getSource() == btnCancel) {
+            Exit();
+        }
     }
 }

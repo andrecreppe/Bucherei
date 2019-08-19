@@ -11,7 +11,7 @@ public class Users {
     private boolean admin;
 
     //SQL Variables
-    private String sql;
+    private String sql, msg;
     private ResultSet result;
     private ArrayList<String> search;
     private PreparedStatement querry;
@@ -62,6 +62,7 @@ public class Users {
 
     //SQL Operations
     public void Insert() {
+        msg = "";
         sql = "";
 
         try {
@@ -79,15 +80,19 @@ public class Users {
             querry.execute();
 
             querry.close();
+
+            msg = "Usuário inserido com sucesso!";
         } catch (Exception e) {
-            String msg = "Oops, aconteceu algum erro!";
+            msg = "Oops, aconteceu algum erro!";
             msg += "\n\nErro na inserção: " + e.getMessage();
 
-            JOptionPane.showMessageDialog(null, msg);
         }
+
+        JOptionPane.showMessageDialog(null, msg);
     }
 
     public void Update(int id) {
+        msg = "";
         sql = "";
 
         try {
@@ -108,15 +113,18 @@ public class Users {
             querry.execute();
 
             querry.close();
-        } catch (Exception e) {
-            String msg = "Oops, aconteceu algum erro!";
-            msg += "\n\nErro na alteração: " + e.getMessage();
 
-            JOptionPane.showMessageDialog(null, msg);
+            msg = "Usuário alterado com sucesso!";
+        } catch (Exception e) {
+            msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na alteração: " + e.getMessage();
         }
+
+        JOptionPane.showMessageDialog(null, msg);
     }
 
     public void Delete(int id) {
+        msg = "";
         sql = "";
 
         try {
@@ -128,12 +136,14 @@ public class Users {
             querry.execute();
 
             querry.close();
-        } catch (Exception e) {
-            String msg = "Oops, aconteceu algum erro!";
-            msg += "\n\nErro na exclusão: " + e.getMessage();
 
-            JOptionPane.showMessageDialog(null, msg);
+            msg = "Usuário excluído com sucesso!";
+        } catch (Exception e) {
+            msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na exclusão: " + e.getMessage();
         }
+
+        JOptionPane.showMessageDialog(null, msg);
     }
 
     public ArrayList<String> Select() {
