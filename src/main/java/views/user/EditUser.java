@@ -1,32 +1,33 @@
-package views;
+package views.user;
 
-import connections.*;
-import tools.*;
+import connections.Users;
+import tools.MD5;
+import tools.WindowConfiguration;
+import views.AdminMenu;
 
 import javax.swing.*;
-import javax.swing.text.*;
-import java.awt.event.*;
+import javax.swing.text.MaskFormatter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-//SET FONTTTTTTTTTTTTTTTT
-
-public class NewUser extends JFrame implements ActionListener {
+public class EditUser extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
-    private AdminMenu adminMenu;
-    private int incY, firstY;
+    private ViewUser userTableMenu;
+    private int incY, firstY, userID;
 
     //UI Objects
     private JLabel lblTitle, lblName, lblSurname, lblCPF, lblEmail, lblPassword, lblIcon, lblAdmin;
     private JTextField txtName, txtSurname, txtEmail;
     private JFormattedTextField mskCPF;
     private MaskFormatter mskMaker;
-    private JPasswordField txtPassword;
     private JComboBox cmbIcons;
     private JRadioButton radAdmin, radUser;
     private ButtonGroup radioGroup;
     private JButton btnAdd, btnClear, btnCancel;
 
-    public NewUser(AdminMenu menu) {
+    public EditUser(ViewUser view, int id){
         //Window setup
         super("Bücherei: Novo Usuário");
         setLayout(null);
@@ -37,12 +38,15 @@ public class NewUser extends JFrame implements ActionListener {
         wConfig = new WindowConfiguration();
         setBounds(wConfig.getCoordinateX(), wConfig.getCoordinateY(), wConfig.getWidth(), wConfig.getHeight());
 
-        adminMenu = menu;
+        userTableMenu = view;
+        userID = id;
 
         firstY = 30;
         incY = 50;
 
         InitializeUI();
+
+        SetFields();
 
         setVisible(true);
     }
@@ -93,13 +97,9 @@ public class NewUser extends JFrame implements ActionListener {
 
             firstY += incY;
 
-            lblPassword = new JLabel("*Senha:");
-            lblPassword.setBounds(295, firstY, 100, 30);
+            lblPassword = new JLabel("*Senha:    A SENHÁ SÓ PODE SER ALTERADA PELO PRÓRPIO USUÁRIO!");
+            lblPassword.setBounds(295, firstY, 400, 30);
             add(lblPassword);
-
-            txtPassword = new JPasswordField();
-            txtPassword.setBounds(350, firstY, 200, 30);
-            add(txtPassword);
 
             firstY += incY;
 
@@ -133,7 +133,7 @@ public class NewUser extends JFrame implements ActionListener {
 
             firstY += incY + 25;
 
-            btnAdd = new JButton("Adicionar");
+            btnAdd = new JButton("Alterar");
             btnAdd.setBounds(220, firstY, 100, 30);
             btnAdd.setMnemonic('A');
             btnAdd.addActionListener(this);
@@ -160,23 +160,44 @@ public class NewUser extends JFrame implements ActionListener {
         ClearFields();
     }
 
+    private void SetFields() {
+        Users user = new Users();
+
+        ArrayList<String> userData = user.Select(userID);
+
+        txtName.setText(userData.get(0));
+        txtSurname.setText(userData.get(1));
+        mskCPF.setText(userData.get(2));
+        txtEmail.setText(userData.get(3));
+
+        cmbIcons.setSelectedIndex(Integer.parseInt(userData.get(4)));
+
+        if(userData.get(5).equals("1")) {
+            radAdmin.setSelected(true);
+        } else {
+            radUser.setSelected(true);
+        }
+    }
+
     private void ClearFields() {
         txtName.setText("");
         txtSurname.setText("");
         mskCPF.setText("");
         txtEmail.setText("");
-        txtPassword.setText("");
         cmbIcons.setSelectedIndex(-1);
         radioGroup.clearSelection();
     }
 
     private void Exit() {
-        adminMenu.setVisible(true);
+        userTableMenu.setVisible(true);
+        userTableMenu.DoSearch();
         dispose();
     }
 
-    private void AddNewUser() {
-        if (AllFieldsOK()) {
+    private void EditUser() {
+        int validation = AllFieldsOK();
+
+        if (validation == 0) {
             Users inclusion = new Users();
             MD5 crypto = new MD5();
             String cpf;
@@ -185,8 +206,6 @@ public class NewUser extends JFrame implements ActionListener {
             inclusion.setSurname(txtSurname.getText());
             inclusion.setEmail(txtEmail.getText());
             inclusion.setIcon(cmbIcons.getSelectedIndex());
-
-            inclusion.setPassword(crypto.GenerateHash(txtPassword.getText()));
 
             cpf = mskCPF.getText().replace(".", "");
             cpf = cpf.replace("-", "");
@@ -198,45 +217,44 @@ public class NewUser extends JFrame implements ActionListener {
                 inclusion.setAdmin(false);
             }
 
-            inclusion.Insert();
+            inclusion.Update(userID);
 
             Exit();
         } else {
-            JOptionPane.showMessageDialog(null, "Existem campos sem preencher!\nPreencha-os.");
+            JOptionPane.showMessageDialog(null,
+                    "Existem campos sem preencher!\nComeça no Campo " + validation + ". Preencha-o.");
         }
     }
 
-    private boolean AllFieldsOK() {
-        boolean verify = true;
+    private int AllFieldsOK() {
+        int fieldNumber = 0;
         String cpf;
 
         if(txtName.getText().length() < 1) {
-            verify = false;
+            fieldNumber = 1;
         } else if (txtSurname.getText().length() < 1) {
-            verify = false;
+            fieldNumber = 2;
         } else if (txtEmail.getText().length() < 1) {
-            verify = false;
-        } else if (txtPassword.getText().length() < 1) {
-            verify = false;
+            fieldNumber = 4;
         } else if (cmbIcons.getSelectedIndex() < 0) {
-            verify = false;
-        } else if (!radAdmin.isSelected() || radUser.isSelected()) {
-            verify = false;
+            fieldNumber = 5;
+        } else if (!radAdmin.isSelected() && !radUser.isSelected()) {
+            fieldNumber = 6;
         }
 
         cpf = mskCPF.getText().replace(".", "");
         cpf = cpf.replace("-", "");
 
         if(cpf.length() != 11) {
-            verify = false;
+            fieldNumber = 3;
         }
 
-        return verify;
+        return fieldNumber;
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
-            AddNewUser();
+            EditUser();
         } else if (e.getSource() == btnClear) {
             ClearFields();
         } else if (e.getSource() == btnCancel) {

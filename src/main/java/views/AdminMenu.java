@@ -1,6 +1,7 @@
 package views;
 
 import tools.*;
+import views.user.*;
 
 import javax.imageio.*;
 import javax.swing.*;
@@ -8,8 +9,6 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-
-//SET FONTTTTTTTTTTTTT
 
 public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     //Control Variables
@@ -147,7 +146,8 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         } else if(e.getSource() == newSection) {
 
         } else if(e.getSource() == viewUsers) {
-
+            new ViewUser(this);
+            setVisible(false);
         } else if(e.getSource() == newUser) {
             new NewUser(this);
             setVisible(false);

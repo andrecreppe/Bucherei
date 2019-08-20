@@ -97,7 +97,7 @@ public class Users {
 
         try {
             sql = "UPDATE users SET " +
-                    "name=?, surname=?, cpf=?, email=?, password=?, icon=?, admin=?" +
+                    "name=?, surname=?, cpf=?, email=?, icon=?, admin=? " +
                     "WHERE id=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
@@ -105,10 +105,9 @@ public class Users {
             querry.setString(2, surname);
             querry.setString(3, cpf);
             querry.setString(4, email);
-            querry.setString(5, password);
-            querry.setInt(6, icon);
-            querry.setBoolean(7, admin);
-            querry.setInt(8, id);
+            querry.setInt(5, icon);
+            querry.setBoolean(6, admin);
+            querry.setInt(7, id);
 
             querry.execute();
 
@@ -178,16 +177,61 @@ public class Users {
         return search;
     }
 
-    public ArrayList<String> Select(String nome) {
+    public ArrayList<String> Select(int id) {
         sql = "";
         result = null;
         search = null;
 
         try {
-            sql = "SELECT * FROM users WHERE name=? ORDER BY name";
+            sql = "SELECT * FROM users WHERE id=? ORDER BY name";
 
             querry = localhost.GetConnection().prepareStatement(sql);
-            querry.setString(1, nome);
+            querry.setInt(1, id);
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("name"));
+                search.add(result.getString("surname"));
+                search.add(result.getString("cpf"));
+                search.add(result.getString("email"));
+                search.add(result.getString("icon"));
+                search.add(result.getString("admin"));
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
+    public ArrayList<String> Select(String toFind, int op) {
+        sql = "";
+        result = null;
+        search = null;
+
+        try {
+            String field = "";
+
+            if(op == 1) {
+                field = "name";
+            } else if(op == 2) {
+                field = "surname";
+            } else if(op == 3) {
+                field = "cpf";
+            } else if(op == 4) {
+                field = "admin";
+            }
+
+            sql = "SELECT * FROM users WHERE " + field + " LIKE ? ORDER BY id";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setString(1, "%" + toFind + "%");
             result = querry.executeQuery();
 
             search = new ArrayList<String>();
@@ -240,5 +284,33 @@ public class Users {
         }
 
         return search;
+    }
+
+    public int GetUserID(String cpf) {
+        int id = -1;
+
+        sql = "";
+        result = null;
+
+        try {
+            sql = "SELECT id FROM users WHERE cpf=? ORDER BY name";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setString(1, cpf);
+            result = querry.executeQuery();
+
+            while (result.next()) {
+                id = result.getInt("id");
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return id;
     }
 }

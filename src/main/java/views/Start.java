@@ -9,6 +9,11 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.util.*;
 
+//set font to the entire program
+//tool tips texts
+//comment the code
+//alterar senha em uma aba separada
+
 public class Start extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
