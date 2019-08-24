@@ -25,7 +25,7 @@ public class EditSection extends JFrame implements ActionListener {
 
     public EditSection(ViewSection view, int id) {
         //Window setup
-        super("Bücherei: Nova Seção");
+        super("Bücherei: Editar Seção");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -139,7 +139,7 @@ public class EditSection extends JFrame implements ActionListener {
         dispose();
     }
 
-    private void AddNewSection() {
+    private void EditThisSection() {
         int validation = AllFieldsOK();
 
         if (validation == 0) {
@@ -182,7 +182,7 @@ public class EditSection extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
-            AddNewSection();
+            EditThisSection();
         } else if (e.getSource() == btnClear) {
             ClearFields();
         } else if (e.getSource() == btnCancel) {

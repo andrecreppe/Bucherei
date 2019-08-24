@@ -26,7 +26,7 @@ public class EditUser extends JFrame implements ActionListener {
 
     public EditUser(ViewUser view, int id){
         //Window setup
-        super("Bücherei: Novo Usuário");
+        super("Bücherei: Editar Usuário");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -191,7 +191,7 @@ public class EditUser extends JFrame implements ActionListener {
         dispose();
     }
 
-    private void EditUser() {
+    private void EditThisUser() {
         int validation = AllFieldsOK();
 
         if (validation == 0) {
@@ -251,7 +251,7 @@ public class EditUser extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
-            EditUser();
+            EditThisUser();
         } else if (e.getSource() == btnClear) {
             ClearFields();
         } else if (e.getSource() == btnCancel) {

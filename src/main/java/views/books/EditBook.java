@@ -6,13 +6,14 @@ import views.*;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
 
-public class NewBook extends JFrame implements ActionListener {
+public class EditBook extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
-    private AdminMenu adminMenu;
-    private int incY, firstY;
+    private ViewBook viewMenu;
+    private int incY, firstY, bookID;
+    private String sectionName;
 
     //UI Objects
     private JLabel lblTitle, lblAuthor, lblYear, lblPublisher, lblPages, lblSection;
@@ -22,9 +23,9 @@ public class NewBook extends JFrame implements ActionListener {
     private JComboBox cmbSections;
     private JButton btnAdd, btnClear, btnCancel;
 
-    public NewBook(AdminMenu menu) {
+    public EditBook(ViewBook menu, int id, String section) {
         //Window setup
-        super("Bücherei: Novo Livro");
+        super("Bücherei: Editar Livro");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,12 +34,16 @@ public class NewBook extends JFrame implements ActionListener {
         wConfig = new WindowConfiguration();
         setBounds(wConfig.getCoordinateX(), wConfig.getCoordinateY(), wConfig.getWidth(), wConfig.getHeight());
 
-        adminMenu = menu;
+        viewMenu = menu;
+        bookID = id;
+        sectionName = section;
 
         firstY = 30;
         incY = 60;
 
         InitializeUI();
+
+        SetFields();
 
         setVisible(true);
     }
@@ -113,7 +118,7 @@ public class NewBook extends JFrame implements ActionListener {
 
             firstY += incY + 25;
 
-            btnAdd = new JButton("Adicionar");
+            btnAdd = new JButton("Alterar");
             btnAdd.setBounds(220, firstY, 100, 30);
             btnAdd.setMnemonic('A');
             btnAdd.addActionListener(this);
@@ -149,12 +154,26 @@ public class NewBook extends JFrame implements ActionListener {
         cmbSections.setSelectedIndex(-1);
     }
 
+    private void SetFields() {
+        Books books = new Books();
+
+        ArrayList<String> book = books.Select(bookID);
+
+        txtTitle.setText(book.get(1));
+        txtAuthor.setText(book.get(2));
+        txtPublisher.setText(book.get(3));
+        numYear.setValue(Integer.parseInt(book.get(4)));
+        numPages.setValue(Integer.parseInt(book.get(5)));
+
+        cmbSections.setSelectedItem(sectionName);
+    }
+
     private void Exit() {
-        adminMenu.setVisible(true);
+        viewMenu.setVisible(true);
         dispose();
     }
 
-    private void AddNewUser() {
+    private void EditThisBook() {
         int validation = AllFieldsOK();
 
         if (validation == 0) {
@@ -182,7 +201,7 @@ public class NewBook extends JFrame implements ActionListener {
             inclusion.setYear(year);
             inclusion.setSection(id);
 
-            inclusion.Insert();
+            inclusion.Update(bookID);
 
             Exit();
         } else {
@@ -225,7 +244,7 @@ public class NewBook extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
-            AddNewUser();
+            EditThisBook();
         } else if (e.getSource() == btnClear) {
             ClearFields();
         } else if (e.getSource() == btnCancel) {

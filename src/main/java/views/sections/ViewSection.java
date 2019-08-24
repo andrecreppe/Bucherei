@@ -193,17 +193,23 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
     }
 
     private void DeleteSection() {
+        Sections operation = new Sections();
+
+        String name = table.getValueAt(selectedRow, 0).toString();
+        String description = table.getValueAt(selectedRow, 1).toString();
+
+        int id = operation.GetSectionID(name, description);
+        String qtd = operation.GetQuantity(id);
+
+        if(Integer.parseInt(qtd) > 0) {
+            JOptionPane.showMessageDialog(null, "Não pode!");
+            return;
+        }
+
         int option = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente deletar " + table.getValueAt(selectedRow, 0) + "?\nEssa ação não poderá ser desfeita.");
+                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.");
 
         if (option == JOptionPane.YES_OPTION) {
-            Sections operation = new Sections();
-
-            String name = table.getValueAt(selectedRow, 0).toString();
-            String description = table.getValueAt(selectedRow, 1).toString();
-
-            int id = operation.GetSectionID(name, description);
-
             operation.Delete(id);
 
             ClearSelectedSection();

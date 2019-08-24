@@ -235,17 +235,17 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
     }
 
     private void DeleteBook() {
-//        int option = JOptionPane.showConfirmDialog(null,
-//                "Deseja realmente deletar " + table.getValueAt(selectedRow, 0) + "?\nEssa ação não poderá ser desfeita.");
-//
-//        if (option == JOptionPane.YES_OPTION) {
-//            Books operation = new Books();
-//
-//            int userId = operation.GetBookID(table.getValueAt(selectedRow, 2).toString());
-//            operation.Delete(userId);
-//
-//            ClearSelectedBook();
-//        }
+        int option = JOptionPane.showConfirmDialog(null,
+                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.");
+
+        if (option == JOptionPane.YES_OPTION) {
+            Books operation = new Books();
+
+            int id = operation.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
+            operation.Delete(id);
+
+            ClearSelectedBook();
+        }
     }
 
     private void ClearSelectedBook() {
@@ -260,9 +260,10 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
             DoSearch();
             ClearSelectedBook();
         } else if (e.getSource() == btnEdit) {
-            //Books search = new Users();
-            //new EditUser(this, search.GetUserID(table.getValueAt(selectedRow, 2).toString()));
-            //dispose();
+            Books search = new Books();
+            int sendID = search.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
+            new EditBook(this, sendID, table.getValueAt(selectedRow, 5).toString());
+            dispose();
         } else if (e.getSource() == btnDelete) {
             DeleteBook();
         } else if (e.getSource() == btnExit) {

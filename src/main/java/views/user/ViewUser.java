@@ -232,7 +232,7 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
 
     private void DeleteUser() {
         int option = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente deletar " + table.getValueAt(selectedRow, 0) + "?\nEssa ação não poderá ser desfeita.");
+                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.");
 
         if (option == JOptionPane.YES_OPTION) {
             Users operation = new Users();

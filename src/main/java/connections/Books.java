@@ -88,8 +88,8 @@ public class Books {
         msg = "";
 
         try {
-            sql = "UPDATE sections SET " +
-                    "name=?, author=?, publisher=?, year=?, pages=?, id_section=?" +
+            sql = "UPDATE books SET " +
+                    "name=?, author=?, publisher=?, year=?, pages=?, id_section=? " +
                     "WHERE id=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
@@ -257,7 +257,32 @@ public class Books {
         return search;
     }
 
-//    public int GetBookID(String name, String author) {
-//
-//    }
+    public int GetBookID(String name, String author) {
+        int id = -1;
+
+        sql = "";
+        result = null;
+
+        try {
+            sql = "SELECT id FROM books WHERE name=? AND author=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setString(1, name);
+            querry.setString(2, author);
+            result = querry.executeQuery();
+
+            while (result.next()) {
+                id = result.getInt("id");
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return id;
+    }
 }

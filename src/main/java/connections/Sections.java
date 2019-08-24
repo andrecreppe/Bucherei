@@ -285,4 +285,32 @@ public class Sections {
 
         return qtd;
     }
+
+    public String GetQuantity(int sectionID) {
+        sql = "";
+        result = null;
+
+        String qtd = "";
+
+        try {
+            sql = "SELECT COUNT(*) AS qtd FROM books WHERE id_section=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setInt(1, sectionID);
+            result = querry.executeQuery();
+
+            while (result.next()) {
+                qtd= result.getString("qtd");
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return qtd;
+    }
 }
