@@ -1,3 +1,11 @@
+/* TO-DO LIST:
+* set font to the entire program
+* tool tips texts
+* comment the code
+* alterar senha em uma aba separada
+* não deletar seção que tem ja livro cadastrado
+*/
+
 package views;
 
 import connections.*;
@@ -8,12 +16,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.*;
-
-//set font to the entire program
-//tool tips texts
-//comment the code
-//alterar senha em uma aba separada
-//deletar????
 
 public class Start extends JFrame implements ActionListener {
     //Control Variables

@@ -152,6 +152,7 @@ public class Books {
                 search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("author"));
+                search.add(result.getString("publisher"));
                 search.add(result.getString("year"));
                 search.add(result.getString("pages"));
                 search.add(result.getString("id_section"));
@@ -188,13 +189,13 @@ public class Books {
                 field = "id_section=";
             }
 
-            sql = "SELECT * FROM sections WHERE " + field + "? ORDER BY name";
+            sql = "SELECT * FROM books WHERE " + field + "? ORDER BY name";
 
             querry = localhost.GetConnection().prepareStatement(sql);
 
-            if (op == 1 || op == 2 || op == 5) {
+            if (op == 1 || op == 2 || op == 4) {
                 querry.setString(1, "%" + toFind + "%");
-            } else if (op == 3 || op == 4) {
+            } else if (op == 3 || op == 5) {
                 querry.setString(1, toFind);
             }
 
@@ -205,6 +206,7 @@ public class Books {
                 search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("author"));
+                search.add(result.getString("publisher"));
                 search.add(result.getString("year"));
                 search.add(result.getString("pages"));
                 search.add(result.getString("id_section"));
@@ -238,6 +240,7 @@ public class Books {
                 search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("author"));
+                search.add(result.getString("publisher"));
                 search.add(result.getString("year"));
                 search.add(result.getString("pages"));
                 search.add(result.getString("id_section"));

@@ -206,11 +206,11 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
 
             operation.Delete(id);
 
-            ClearSelectedUser();
+            ClearSelectedSection();
         }
     }
 
-    private void ClearSelectedUser() {
+    private void ClearSelectedSection() {
         selectedRow = -1;
         lblSelected.setText("Nenhuma seção selecionada!");
         btnEdit.setEnabled(false);
@@ -220,7 +220,7 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSearch) {
             DoSearch();
-            ClearSelectedUser();
+            ClearSelectedSection();
         } else if (e.getSource() == btnEdit) {
             Sections search = new Sections();
 
@@ -261,7 +261,7 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
     public void mouseClicked(MouseEvent e) {
         int row = table.rowAtPoint(e.getPoint());
 
-        lblSelected.setText("Seção " + table.getValueAt(row, 0) + " selecionada!");
+        lblSelected.setText("Seção '" + table.getValueAt(row, 0) + "' selecionada!");
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
         selectedRow = row;

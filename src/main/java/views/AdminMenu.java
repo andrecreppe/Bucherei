@@ -1,9 +1,8 @@
 package views;
 
 import tools.*;
-import views.books.NewBook;
-import views.sections.NewSection;
-import views.sections.ViewSection;
+import views.books.*;
+import views.sections.*;
 import views.user.*;
 
 import javax.imageio.*;
@@ -146,7 +145,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == viewBooks) {
-            //new ViewBook(this);
+            new ViewBook(this);
         } else if (e.getSource() == newBook) {
             new NewBook(this);
         } else if (e.getSource() == viewSections) {

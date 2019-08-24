@@ -219,6 +219,13 @@ public class Sections {
             JOptionPane.showMessageDialog(null, msg);
         }
 
+        if(search.size() <= 0) {
+            search.add("NOT FOUND");
+            search.add("NOT FOUND");
+            search.add("NOT FOUND");
+            search.add("NOT FOUND");
+        }
+
         return search;
     }
 
