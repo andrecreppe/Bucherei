@@ -64,13 +64,13 @@ public class EditSection extends JFrame implements ActionListener {
             add(lblDescription);
 
             txaDescription = new JTextArea();
-            txaDescription.setBounds(350, firstY, 200, 30);
+            txaDescription.setBounds(350, firstY, 250, 50);
             add(txaDescription);
 
             firstY += incY;
 
             lblActive = new JLabel("*Ativo:");
-            lblActive.setBounds(310, firstY, 100, 30);
+            lblActive.setBounds(300, firstY, 100, 30);
             add(lblActive);
 
             radActive = new JRadioButton("Ativo");

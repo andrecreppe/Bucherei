@@ -163,6 +163,8 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         } else if (e.getSource() == newRent) {
             //new NewRent(this);
         }
+
+        dispose();
     }
 
     public void menuSelected(MenuEvent e) {

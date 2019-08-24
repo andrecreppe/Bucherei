@@ -64,8 +64,8 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
             table.getTableHeader().setReorderingAllowed(false);
             table.getColumnModel().getColumn(0).setMaxWidth(125);
             table.getColumnModel().getColumn(0).setMinWidth(125);
-            table.getColumnModel().getColumn(1).setMaxWidth(125);
-            table.getColumnModel().getColumn(1).setMinWidth(125);
+            table.getColumnModel().getColumn(1).setMaxWidth(250);
+            table.getColumnModel().getColumn(1).setMinWidth(250);
             table.getColumnModel().getColumn(2).setMaxWidth(125);
             table.getColumnModel().getColumn(2).setMinWidth(125);
 
@@ -123,7 +123,7 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
             grpSearch.add(radActive);
             grpSearch.add(radAll);
 
-            lblSelected = new JLabel("Nenhum usuário selecionado!");
+            lblSelected = new JLabel("Nenhuma seção selecionada!");
             lblSelected.setBounds(620, 260, 200, 20);
             add(lblSelected);
 

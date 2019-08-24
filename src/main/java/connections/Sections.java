@@ -71,7 +71,7 @@ public class Sections {
 
         try {
             sql = "UPDATE sections SET " +
-                    "name=?, description=?, active=?, email=?, password=?, icon=?, admin=?" +
+                    "name=?, description=?, active=? " +
                     "WHERE id=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
@@ -230,7 +230,7 @@ public class Sections {
 
             querry = localhost.GetConnection().prepareStatement(sql);
             querry.setString(1, name);
-            querry.setString(1, description);
+            querry.setString(2, description);
             result = querry.executeQuery();
 
             while (result.next()) {
