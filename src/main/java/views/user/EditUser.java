@@ -15,7 +15,7 @@ public class EditUser extends JFrame implements ActionListener {
     private int incY, firstY, userID;
 
     //UI Objects
-    private JLabel lblTitle, lblName, lblSurname, lblCPF, lblEmail, lblPassword, lblIcon, lblAdmin;
+    private JLabel lblName, lblSurname, lblCPF, lblEmail, lblPassword, lblIcon, lblAdmin;
     private JTextField txtName, txtSurname, txtEmail;
     private JFormattedTextField mskCPF;
     private MaskFormatter mskMaker;

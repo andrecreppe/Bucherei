@@ -124,8 +124,6 @@ public class NewSection extends JFrame implements ActionListener {
 
         if (validation == 0) {
             Sections inclusion = new Sections();
-            MD5 crypto = new MD5();
-            String cpf;
 
             inclusion.setName(txtName.getText());
             inclusion.setDescription(txaDescription.getText());

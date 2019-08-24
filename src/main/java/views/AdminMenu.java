@@ -1,6 +1,7 @@
 package views;
 
 import tools.*;
+import views.books.NewBook;
 import views.sections.NewSection;
 import views.sections.ViewSection;
 import views.user.*;
@@ -147,24 +148,22 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         if (e.getSource() == viewBooks) {
             //new ViewBook(this);
         } else if (e.getSource() == newBook) {
-            //new NewBook(this);
+            new NewBook(this);
         } else if (e.getSource() == viewSections) {
             new ViewSection(this);
         } else if (e.getSource() == newSection) {
             new NewSection(this);
         } else if (e.getSource() == viewUsers) {
             new ViewUser(this);
-            setVisible(false);
         } else if (e.getSource() == newUser) {
             new NewUser(this);
-            setVisible(false);
         } else if (e.getSource() == viewRented) {
             //new ViewRent(this);
         } else if (e.getSource() == newRent) {
             //new NewRent(this);
         }
 
-        dispose();
+        setVisible(false);
     }
 
     public void menuSelected(MenuEvent e) {

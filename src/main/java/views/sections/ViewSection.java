@@ -181,12 +181,12 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
 
         model.setRowCount(0);
 
-        for (int i = 0; i < items.size(); i += 3) {
+        for (int i = 0; i < items.size(); i += 4) {
             Object[] data = {
-                    items.get(i),
                     items.get(i + 1),
-                    items.get(i + 2).equals("1") ? "Sim" : "Não",
-                    "aaaa"
+                    items.get(i + 2),
+                    items.get(i + 3).equals("1") ? "Sim" : "Não",
+                    search.GetQuantity(items.get(i))
             };
             model.addRow(data);
         }
@@ -205,6 +205,8 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
             int id = operation.GetSectionID(name, description);
 
             operation.Delete(id);
+
+            ClearSelectedUser();
         }
     }
 

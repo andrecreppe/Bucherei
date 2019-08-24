@@ -239,6 +239,8 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
 
             int userId = operation.GetUserID(table.getValueAt(selectedRow, 2).toString());
             operation.Delete(userId);
+
+            ClearSelectedUser();
         }
     }
 
@@ -246,6 +248,7 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
         selectedRow = -1;
         lblSelected.setText("Nenhum usuário selecionado!");
         btnEdit.setEnabled(false);
+        btnDelete.setEnabled(false);
     }
 
     public void actionPerformed(ActionEvent e) {

@@ -121,13 +121,14 @@ public class Sections {
         search = null;
 
         try {
-            sql = "SELECT * FROM sections ORDER BY name";
+            sql = "SELECT * FROM sections ORDER BY id";
 
             querry = localhost.GetConnection().prepareStatement(sql);
             result = querry.executeQuery();
 
             search = new ArrayList<String>();
             while (result.next()) {
+                search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("description"));
                 search.add(result.getString("active"));
@@ -158,7 +159,7 @@ public class Sections {
                 field = "active=";
             }
 
-            sql = "SELECT * FROM sections WHERE " + field + "? ORDER BY name";
+            sql = "SELECT * FROM sections WHERE " + field + "? ORDER BY id";
 
             querry = localhost.GetConnection().prepareStatement(sql);
 
@@ -172,6 +173,7 @@ public class Sections {
 
             search = new ArrayList<String>();
             while (result.next()) {
+                search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("description"));
                 search.add(result.getString("active"));
@@ -194,7 +196,7 @@ public class Sections {
         search = null;
 
         try {
-            sql = "SELECT * FROM sections WHERE id=? ORDER BY name";
+            sql = "SELECT * FROM sections WHERE id=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
             querry.setInt(1, id);
@@ -203,6 +205,7 @@ public class Sections {
 
             search = new ArrayList<String>();
             while (result.next()) {
+                search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("description"));
                 search.add(result.getString("active"));
@@ -246,5 +249,33 @@ public class Sections {
         }
 
         return id;
+    }
+
+    public String GetQuantity(String sectionID) {
+        sql = "";
+        result = null;
+
+        String qtd = "";
+
+        try {
+            sql = "SELECT COUNT(*) AS qtd FROM books WHERE id_section=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setInt(1, Integer.parseInt(sectionID));
+            result = querry.executeQuery();
+
+            while (result.next()) {
+                qtd= result.getString("qtd");
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return qtd;
     }
 }

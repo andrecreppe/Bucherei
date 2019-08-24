@@ -151,7 +151,7 @@ public class Users {
         search = null;
 
         try {
-            sql = "SELECT * FROM users ORDER BY name";
+            sql = "SELECT * FROM users ORDER BY id";
 
             querry = localhost.GetConnection().prepareStatement(sql);
             result = querry.executeQuery();
@@ -183,7 +183,7 @@ public class Users {
         search = null;
 
         try {
-            sql = "SELECT * FROM users WHERE id=? ORDER BY name";
+            sql = "SELECT * FROM users WHERE id=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
             querry.setInt(1, id);

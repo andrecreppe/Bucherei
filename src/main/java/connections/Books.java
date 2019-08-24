@@ -65,8 +65,8 @@ public class Books {
             querry = localhost.GetConnection().prepareStatement(sql);
             querry.setString(1, name);
             querry.setString(2, author);
-            querry.setString(3, publisher);
-            querry.setInt(4, year);
+            querry.setInt(3, year);
+            querry.setString(4, publisher);
             querry.setInt(5, pages);
             querry.setInt(6, section);
 
@@ -136,26 +136,25 @@ public class Books {
         JOptionPane.showMessageDialog(null, msg);
     }
 
-    public ArrayList<String> Select(String name) {
+    public ArrayList<String> Select() {
         sql = "";
         result = null;
         search = null;
 
         try {
-            sql = "SELECT * FROM books WHERE name LIKE ? ORDER BY name";
+            sql = "SELECT * FROM books ORDER BY name";
 
             querry = localhost.GetConnection().prepareStatement(sql);
-            querry.setString(1, '%' + name);
             result = querry.executeQuery();
 
             search = new ArrayList<String>();
             while (result.next()) {
+                search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("author"));
                 search.add(result.getString("year"));
                 search.add(result.getString("pages"));
                 search.add(result.getString("id_section"));
-                search.add("alugado?");
             }
 
             querry.close();
@@ -169,26 +168,46 @@ public class Books {
         return search;
     }
 
-    public ArrayList<String> Select(int secao) {
+    public ArrayList<String> Select(String toFind, int op) {
         sql = "";
         result = null;
         search = null;
 
         try {
-            sql = "SELECT * FROM sections WHERE id_section=? ORDER BY name";
+            String field = "";
+
+            if (op == 1) {
+                field = "name LIKE ";
+            } else if (op == 2) {
+                field = "author LIKE ";
+            } else if (op == 3) {
+                field = "year=";
+            } else if (op == 4) {
+                field = "publisher LIKE ";
+            } else if (op == 5) {
+                field = "id_section=";
+            }
+
+            sql = "SELECT * FROM sections WHERE " + field + "? ORDER BY name";
 
             querry = localhost.GetConnection().prepareStatement(sql);
-            querry.setInt(1, secao);
+
+            if (op == 1 || op == 2 || op == 5) {
+                querry.setString(1, "%" + toFind + "%");
+            } else if (op == 3 || op == 4) {
+                querry.setString(1, toFind);
+            }
+
             result = querry.executeQuery();
 
             search = new ArrayList<String>();
             while (result.next()) {
+                search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("author"));
                 search.add(result.getString("year"));
                 search.add(result.getString("pages"));
                 search.add(result.getString("id_section"));
-                search.add("alugado?");
             }
 
             querry.close();
@@ -201,4 +220,41 @@ public class Books {
 
         return search;
     }
+
+    public ArrayList<String> Select(int id) {
+        sql = "";
+        result = null;
+        search = null;
+
+        try {
+            sql = "SELECT * FROM books WHERE id=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setInt(1, id);
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("id"));
+                search.add(result.getString("name"));
+                search.add(result.getString("author"));
+                search.add(result.getString("year"));
+                search.add(result.getString("pages"));
+                search.add(result.getString("id_section"));
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
+//    public int GetBookID(String name, String author) {
+//
+//    }
 }
