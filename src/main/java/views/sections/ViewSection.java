@@ -1,4 +1,4 @@
-package views.user;
+package views.sections;
 
 import connections.*;
 import tools.*;
@@ -10,7 +10,7 @@ import javax.swing.text.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class ViewUser extends JFrame implements ActionListener, ItemListener, MouseListener {
+public class ViewSection extends JFrame implements ActionListener, MouseListener, ItemListener {
     //Control Variables
     private WindowConfiguration wConfig;
     private AdminMenu adminMenu;
@@ -22,15 +22,13 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
     private JScrollPane dataPanel;
     private JLabel lblSearch, lblSelected;
     private JTextField txtSearch;
-    private JFormattedTextField mskCPF;
-    private MaskFormatter mskMaker;
     private JButton btnEdit, btnExit, btnSearch, btnDelete;
-    private JRadioButton radName, radSurname, radCPF, radAdmin, radAll, radIsAdmin, radIsUser;
-    private ButtonGroup grpSearch, grpAdminSearch;
+    private JRadioButton radName, radIsActive, radActive, radIsUnactive, radAll;
+    private ButtonGroup grpSearch, grpActive;
 
-    public ViewUser(AdminMenu menu) {
+    public ViewSection(AdminMenu menu) {
         //Window setup
-        super("Bücherei: Consulta de Usuários");
+        super("Bücherei: Consulta de Seções");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -57,63 +55,48 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
                 }
             };
             model.addColumn("Nome");
-            model.addColumn("Sobrenome");
-            model.addColumn("CPF");
-            model.addColumn("Email");
-            model.addColumn("Admin?");
-            model.addColumn("QTD ALUGADOS");
+            model.addColumn("Descrição");
+            model.addColumn("Ativo");
+            model.addColumn("Qtd. de livros");
 
             table = new JTable(model);
             table.addMouseListener(this);
             table.getTableHeader().setReorderingAllowed(false);
-            table.getColumnModel().getColumn(0).setMaxWidth(100);
-            table.getColumnModel().getColumn(0).setMinWidth(100);
-            table.getColumnModel().getColumn(1).setMaxWidth(100);
-            table.getColumnModel().getColumn(1).setMinWidth(100);
-            table.getColumnModel().getColumn(2).setMaxWidth(100);
-            table.getColumnModel().getColumn(2).setMinWidth(100);
-            table.getColumnModel().getColumn(3).setMaxWidth(100);
-            table.getColumnModel().getColumn(3).setMinWidth(100);
-            table.getColumnModel().getColumn(4).setMaxWidth(100);
-            table.getColumnModel().getColumn(4).setMinWidth(100);
+            table.getColumnModel().getColumn(0).setMaxWidth(125);
+            table.getColumnModel().getColumn(0).setMinWidth(125);
+            table.getColumnModel().getColumn(1).setMaxWidth(125);
+            table.getColumnModel().getColumn(1).setMinWidth(125);
+            table.getColumnModel().getColumn(2).setMaxWidth(125);
+            table.getColumnModel().getColumn(2).setMinWidth(125);
 
             dataPanel = new JScrollPane(table);
             dataPanel.setBounds(10, 10, 600, 450);
             add(dataPanel);
 
             txtSearch = new JTextField();
-            txtSearch.setBounds(620, 130, 160, 25);
+            txtSearch.setBounds(620, 110, 160, 25);
             txtSearch.setEnabled(false);
             add(txtSearch);
 
             btnSearch = new JButton("Pesquisar!");
-            btnSearch.setBounds(620, 160, 160, 20);
+            btnSearch.setBounds(620, 140, 160, 20);
             btnSearch.setMnemonic('P');
             btnSearch.addActionListener(this);
             add(btnSearch);
 
-            radIsAdmin = new JRadioButton("Admin");
-            radIsAdmin.setBounds(630, 130, 80, 25);
-            radIsAdmin.setVisible(false);
-            add(radIsAdmin);
+            radIsActive = new JRadioButton("Ativo");
+            radIsActive.setBounds(620, 110, 80, 25);
+            radIsActive.setVisible(false);
+            add(radIsActive);
 
-            radIsUser = new JRadioButton("Cliente");
-            radIsUser.setBounds(710, 130, 100, 25);
-            radIsUser.setVisible(false);
-            add(radIsUser);
+            radIsUnactive = new JRadioButton("Desativo");
+            radIsUnactive.setBounds(700, 110, 120, 25);
+            radIsUnactive.setVisible(false);
+            add(radIsUnactive);
 
-            grpAdminSearch = new ButtonGroup();
-            grpAdminSearch.add(radIsAdmin);
-            grpAdminSearch.add(radIsUser);
-
-            mskCPF = new JFormattedTextField();
-            mskCPF.setBounds(650, 130, 100, 25);
-            mskCPF.setVisible(false);
-            add(mskCPF);
-
-            mskMaker = new MaskFormatter("###.###.###-##");
-            mskMaker.setPlaceholderCharacter('_');
-            mskMaker.install(mskCPF);
+            grpSearch = new ButtonGroup();
+            grpSearch.add(radIsActive);
+            grpSearch.add(radIsUnactive);
 
             lblSearch = new JLabel("Filtro por:");
             lblSearch.setBounds(665, 5, 100, 30);
@@ -124,46 +107,34 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
             radName.addItemListener(this);
             add(radName);
 
-            radSurname = new JRadioButton("Sobrenome");
-            radSurname.setBounds(700, 35, 100, 30);
-            radSurname.addItemListener(this);
-            add(radSurname);
-
-            radCPF = new JRadioButton("CPF");
-            radCPF.setBounds(620, 65, 70, 30);
-            radCPF.addItemListener(this);
-            add(radCPF);
-
-            radAdmin = new JRadioButton("Tipo");
-            radAdmin.setBounds(700, 65, 100, 30);
-            radAdmin.addItemListener(this);
-            add(radAdmin);
+            radActive = new JRadioButton("Ativo");
+            radActive.setBounds(720, 35, 100, 30);
+            radActive.addItemListener(this);
+            add(radActive);
 
             radAll = new JRadioButton("TODOS");
-            radAll.setBounds(660, 95, 100, 30);
+            radAll.setBounds(660, 70, 100, 30);
             radAll.addItemListener(this);
             radAll.setSelected(true);
             add(radAll);
 
             grpSearch = new ButtonGroup();
             grpSearch.add(radName);
-            grpSearch.add(radSurname);
-            grpSearch.add(radCPF);
-            grpSearch.add(radAdmin);
+            grpSearch.add(radActive);
             grpSearch.add(radAll);
 
             lblSelected = new JLabel("Nenhum usuário selecionado!");
             lblSelected.setBounds(620, 260, 200, 20);
             add(lblSelected);
 
-            btnEdit = new JButton("Editar usuário");
+            btnEdit = new JButton("Editar seção");
             btnEdit.setBounds(620, 280, 160, 25);
             btnEdit.setMnemonic('E');
             btnEdit.setEnabled(false);
             btnEdit.addActionListener(this);
             add(btnEdit);
 
-            btnDelete = new JButton("Deletar usuário");
+            btnDelete = new JButton("Deletar seção");
             btnDelete.setBounds(620, 310, 160, 25);
             btnDelete.setMnemonic('E');
             btnDelete.setEnabled(false);
@@ -184,7 +155,7 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
     }
 
     public void DoSearch() {
-        Users search = new Users();
+        Sections search = new Sections();
         ArrayList<String> items;
 
         String searchText = txtSearch.getText();
@@ -192,17 +163,10 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
 
         if (radName.isSelected()) {
             searchOption = 1;
-        } else if (radSurname.isSelected()) {
+        } else if (radActive.isSelected()) {
             searchOption = 2;
-        } else if (radCPF.isSelected()) {
-            searchOption = 3;
 
-            searchText = mskCPF.getText().replace(".", "");
-            searchText = searchText.replace("-", "");
-        } else if (radAdmin.isSelected()) {
-            searchOption = 4;
-
-            if (radIsAdmin.isSelected()) {
+            if (radIsActive.isSelected()) {
                 searchText = "1";
             } else {
                 searchText = "0";
@@ -217,35 +181,38 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
 
         model.setRowCount(0);
 
-        for (int i = 0; i < items.size(); i += 6) {
+        for (int i = 0; i < items.size(); i += 3) {
             Object[] data = {
                     items.get(i),
                     items.get(i + 1),
-                    items.get(i + 2),
-                    items.get(i + 3),
-                    items.get(i + 5).equals("1") ? "Sim" : "Não",
+                    items.get(i + 2).equals("1") ? "Sim" : "Não",
                     "aaaa"
             };
             model.addRow(data);
         }
     }
 
-    private void DeleteUser() {
+    private void DeleteSection() {
         int option = JOptionPane.showConfirmDialog(null,
                 "Deseja realmente deletar " + table.getValueAt(selectedRow, 0) + "?\nEssa ação não poderá ser desfeita.");
 
         if (option == JOptionPane.YES_OPTION) {
-            Users operation = new Users();
+            Sections operation = new Sections();
 
-            int userId = operation.GetUserID(table.getValueAt(selectedRow, 2).toString());
-            operation.Delete(userId);
+            String name = table.getValueAt(selectedRow, 0).toString();
+            String description = table.getValueAt(selectedRow, 1).toString();
+
+            int id = operation.GetSectionID(name, description);
+
+            operation.Delete(id);
         }
     }
 
     private void ClearSelectedUser() {
         selectedRow = -1;
-        lblSelected.setText("Nenhum usuário selecionado!");
+        lblSelected.setText("Nenhuma seção selecionada!");
         btnEdit.setEnabled(false);
+        btnDelete.setEnabled(false);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -253,11 +220,15 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
             DoSearch();
             ClearSelectedUser();
         } else if (e.getSource() == btnEdit) {
-            Users search = new Users();
-            new EditUser(this, search.GetUserID(table.getValueAt(selectedRow, 2).toString()));
+            Sections search = new Sections();
+
+            String name = table.getValueAt(selectedRow, 0).toString();
+            String description = table.getValueAt(selectedRow, 1).toString();
+
+            new EditSection(this, search.GetSectionID(name, description));
             dispose();
         } else if (e.getSource() == btnDelete) {
-            DeleteUser();
+            DeleteSection();
         } else if (e.getSource() == btnExit) {
             adminMenu.setVisible(true);
             dispose();
@@ -271,17 +242,14 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
             txtSearch.setEnabled(true);
         }
 
-        radIsAdmin.setVisible(false);
-        radIsUser.setVisible(false);
-        mskCPF.setVisible(false);
+        radIsActive.setVisible(false);
+        radIsUnactive.setVisible(false);
         txtSearch.setVisible(false);
 
-        if (e.getSource() == radAdmin) {
-            radIsAdmin.setVisible(true);
-            radIsAdmin.setSelected(true);
-            radIsUser.setVisible(true);
-        } else if (e.getSource() == radCPF) {
-            mskCPF.setVisible(true);
+        if (e.getSource() == radActive) {
+            radIsActive.setVisible(true);
+            radIsActive.setSelected(true);
+            radIsUnactive.setVisible(true);
         } else {
             txtSearch.setVisible(true);
             txtSearch.setText("");
@@ -291,7 +259,7 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
     public void mouseClicked(MouseEvent e) {
         int row = table.rowAtPoint(e.getPoint());
 
-        lblSelected.setText("Usuário " + table.getValueAt(row, 0) + " selecionado!");
+        lblSelected.setText("Seção " + table.getValueAt(row, 0) + " selecionada!");
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
         selectedRow = row;

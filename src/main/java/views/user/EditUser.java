@@ -1,15 +1,12 @@
 package views.user;
 
-import connections.Users;
-import tools.MD5;
-import tools.WindowConfiguration;
-import views.AdminMenu;
+import connections.*;
+import tools.*;
 
 import javax.swing.*;
-import javax.swing.text.MaskFormatter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import javax.swing.text.*;
+import java.awt.event.*;
+import java.util.*;
 
 public class EditUser extends JFrame implements ActionListener {
     //Control Variables

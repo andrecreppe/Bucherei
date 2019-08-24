@@ -8,8 +8,6 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.event.*;
 
-//SET FONTTTTTTTTTTTTTTTT
-
 public class NewUser extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
@@ -122,7 +120,7 @@ public class NewUser extends JFrame implements ActionListener {
             add(lblAdmin);
 
             radAdmin = new JRadioButton("Admin");
-            radAdmin.setBounds(370, firstY, 70, 30);
+            radAdmin.setBounds(370, firstY, 80, 30);
             add(radAdmin);
             radUser = new JRadioButton("User");
             radUser.setBounds(450, firstY, 100, 30);

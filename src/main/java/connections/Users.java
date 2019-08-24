@@ -293,7 +293,7 @@ public class Users {
         result = null;
 
         try {
-            sql = "SELECT id FROM users WHERE cpf=? ORDER BY name";
+            sql = "SELECT id FROM users WHERE cpf=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
             querry.setString(1, cpf);

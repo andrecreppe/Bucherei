@@ -1,6 +1,8 @@
 package views;
 
 import tools.*;
+import views.sections.NewSection;
+import views.sections.ViewSection;
 import views.user.*;
 
 import javax.imageio.*;
@@ -20,7 +22,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     //UI Objects
     private JLabel creppe, dea;
     private JMenuBar bar;
-    private JMenu books, sections, users, rented, about, logout;
+    private JMenu books, sections, users, rented, about, logout, report;
     private JMenuItem viewBooks, viewSections, viewUsers, viewRented;
     private JMenuItem newBook, newSection, newUser, newRent;
 
@@ -37,12 +39,12 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         //Window size
         wConfig = new WindowConfiguration();
         setBounds(wConfig.getCoordinateX(), wConfig.getCoordinateY(), wConfig.getWidth(), wConfig.getHeight());
-        
+
         NavigationBar();
 
         setVisible(true);
     }
-    
+
     public void NavigationBar() {
         //MenuBar setup
         bar = new JMenuBar();
@@ -97,6 +99,11 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         newRent.addActionListener(this);
         rented.add(newRent);
 
+        //Menu 'relatorio'
+        report = new JMenu("Relatório");
+        report.setMnemonic('R');
+        bar.add(report);
+
         //Menu 'sobre'
         about = new JMenu("Desenvolvedores");
         about.setMnemonic('D');
@@ -137,24 +144,24 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == viewBooks) {
-            
-        } else if(e.getSource() == newBook) {
-            
-        } else if(e.getSource() == viewSections) {
-
-        } else if(e.getSource() == newSection) {
-
-        } else if(e.getSource() == viewUsers) {
+        if (e.getSource() == viewBooks) {
+            //new ViewBook(this);
+        } else if (e.getSource() == newBook) {
+            //new NewBook(this);
+        } else if (e.getSource() == viewSections) {
+            new ViewSection(this);
+        } else if (e.getSource() == newSection) {
+            new NewSection(this);
+        } else if (e.getSource() == viewUsers) {
             new ViewUser(this);
             setVisible(false);
-        } else if(e.getSource() == newUser) {
+        } else if (e.getSource() == newUser) {
             new NewUser(this);
             setVisible(false);
-        } else if(e.getSource() == viewRented) {
-
-        } else if(e.getSource() == newRent) {
-
+        } else if (e.getSource() == viewRented) {
+            //new ViewRent(this);
+        } else if (e.getSource() == newRent) {
+            //new NewRent(this);
         }
     }
 
@@ -162,13 +169,14 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         if (e.getSource() == about) {
             System.out.println("os brabo");
             DeveloperInfo();
-        }
-        else if(e.getSource() == logout) {
+        } else if (e.getSource() == logout) {
             int option = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?");
-            if(option == JOptionPane.YES_OPTION) {
+            if (option == JOptionPane.YES_OPTION) {
                 startMenu.setVisible(true);
                 dispose();
             }
+        } else if (e.getSource() == report) {
+            System.out.println("fazer relatoriooooo");
         }
     }
 

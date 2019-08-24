@@ -115,23 +115,22 @@ public class Sections {
         JOptionPane.showMessageDialog(null, msg);
     }
 
-    public ArrayList<String> Select(String name, boolean activve) {
+    public ArrayList<String> Select() {
         sql = "";
         result = null;
         search = null;
 
         try {
-            sql = "SELECT * FROM sections WHERE name LIKE ? AND active=? ORDER BY name";
+            sql = "SELECT * FROM sections ORDER BY name";
 
             querry = localhost.GetConnection().prepareStatement(sql);
-            querry.setString(1, '%' + name);
-            querry.setBoolean(1, activve);
             result = querry.executeQuery();
 
             search = new ArrayList<String>();
             while (result.next()) {
                 search.add(result.getString("name"));
                 search.add(result.getString("description"));
+                search.add(result.getString("active"));
             }
 
             querry.close();
@@ -143,5 +142,109 @@ public class Sections {
         }
 
         return search;
+    }
+
+    public ArrayList<String> Select(String toFind, int op) {
+        sql = "";
+        result = null;
+        search = null;
+
+        try {
+            String field = "";
+
+            if (op == 1) {
+                field = "name LIKE ";
+            } else if (op == 2) {
+                field = "active=";
+            }
+
+            sql = "SELECT * FROM sections WHERE " + field + "? ORDER BY name";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+
+            if (op == 1) {
+                querry.setString(1, "%" + toFind + "%");
+            } else if (op == 2) {
+                querry.setString(1, toFind);
+            }
+
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("name"));
+                search.add(result.getString("description"));
+                search.add(result.getString("active"));
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
+    public ArrayList<String> Select(int id) {
+        sql = "";
+        result = null;
+        search = null;
+
+        try {
+            sql = "SELECT * FROM sections WHERE id=? ORDER BY name";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setInt(1, id);
+
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("name"));
+                search.add(result.getString("description"));
+                search.add(result.getString("active"));
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
+    public int GetSectionID(String name, String description) {
+        int id = -1;
+
+        sql = "";
+        result = null;
+
+        try {
+            sql = "SELECT id FROM sections WHERE name=? AND description=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setString(1, name);
+            querry.setString(1, description);
+            result = querry.executeQuery();
+
+            while (result.next()) {
+                id = result.getInt("id");
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return id;
     }
 }
