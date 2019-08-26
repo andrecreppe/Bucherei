@@ -25,6 +25,8 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     private JMenu books, sections, users, rented, about, logout, report;
     private JMenuItem viewBooks, viewSections, viewUsers, viewRented;
     private JMenuItem newBook, newSection, newUser, newRent;
+    private JPanel developers;
+    private JLabel lblCreppe, lblDea;
 
     public AdminMenu(String name, Start login) {
         //Window setup
@@ -102,6 +104,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         //Menu 'relatorio'
         report = new JMenu("Relatório");
         report.setMnemonic('R');
+        report.addMenuListener(this);
         bar.add(report);
 
         //Menu 'sobre'
@@ -115,32 +118,50 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         logout.setMnemonic('O');
         logout.addMenuListener(this);
         bar.add(logout);
+
+        DevFrame();
     }
 
-    public void Dashboard() {
-        //livros alugados
-        //usuarios picaretas
-    }
-
-    public void DeveloperInfo() {
+    public void DevFrame() {
         try {
+            developers = new JPanel();
+            developers.setSize(getSize());
+            developers.setLayout(null);
+            developers.setVisible(false);
+            add(developers);
+
             imageLoader = ImageIO.read(getClass().getResource("/images/creppe.png"));
             creppe = new JLabel(new ImageIcon(imageLoader));
             creppe.setBounds(40, 10, 300, 300);
-            add(creppe);
+            developers.add(creppe);
 
             imageLoader = null;
 
             imageLoader = ImageIO.read(getClass().getResource("/images/dea.png"));
             dea = new JLabel(new ImageIcon(imageLoader));
             dea.setBounds(440, 10, 300, 300);
-            add(dea);
+            developers.add(dea);
+
+            lblCreppe = new JLabel("<html>André Zanardi Creppe<br/><br/>Número 01</html>");
+            lblCreppe.setBounds(125, 290, 300, 100);
+            developers.add(lblCreppe);
+
+            lblDea = new JLabel("<html>Thiago Prado Dalla Dea<br/><br/>Número 32</html>");
+            lblDea.setBounds(530, 290, 300, 100);
+            developers.add(lblDea);
+
+            repaint();
         } /* Ash */ catch /* um */ (Exception e) {
             String msg = "Oops, aconteceu algum erro!";
             msg += "\n\nErro no carregamento da imagem: " + e.getMessage();
 
             JOptionPane.showMessageDialog(null, msg);
         }
+    }
+
+    public void Dashboard() {
+        //livros alugados
+        //usuarios picaretas
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -167,8 +188,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
 
     public void menuSelected(MenuEvent e) {
         if (e.getSource() == about) {
-            System.out.println("os brabo");
-            DeveloperInfo();
+            developers.setVisible(true);
         } else if (e.getSource() == logout) {
             int option = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?");
             if (option == JOptionPane.YES_OPTION) {
@@ -181,6 +201,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     }
 
     public void menuDeselected(MenuEvent e) {
+        developers.setVisible(false);
     }
 
     public void menuCanceled(MenuEvent e) {
