@@ -165,7 +165,7 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
 
             btnDelete = new JButton("Deletar usuário");
             btnDelete.setBounds(620, 310, 160, 25);
-            btnDelete.setMnemonic('E');
+            btnDelete.setMnemonic('D');
             btnDelete.setEnabled(false);
             btnDelete.addActionListener(this);
             add(btnDelete);

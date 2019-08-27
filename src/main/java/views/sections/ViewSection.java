@@ -136,7 +136,7 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
 
             btnDelete = new JButton("Deletar seção");
             btnDelete.setBounds(620, 310, 160, 25);
-            btnDelete.setMnemonic('E');
+            btnDelete.setMnemonic('D');
             btnDelete.setEnabled(false);
             btnDelete.addActionListener(this);
             add(btnDelete);
@@ -202,12 +202,14 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
         String qtd = operation.GetQuantity(id);
 
         if(Integer.parseInt(qtd) > 0) {
-            JOptionPane.showMessageDialog(null, "Não pode!");
+            JOptionPane.showMessageDialog(null,
+                    "Ação bloqueada!\nNão é possivel deletar uma seção com livros nela!");
             return;
         }
 
         int option = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.");
+                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) +
+                        "'?\nEssa ação não poderá ser desfeita.");
 
         if (option == JOptionPane.YES_OPTION) {
             operation.Delete(id);

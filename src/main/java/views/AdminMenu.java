@@ -2,6 +2,8 @@ package views;
 
 import tools.*;
 import views.books.*;
+import views.rents.NewRent;
+import views.rents.ViewRent;
 import views.sections.*;
 import views.user.*;
 
@@ -15,16 +17,15 @@ import java.awt.image.*;
 public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     //Control Variables
     private WindowConfiguration wConfig;
-    private String userName;
     private BufferedImage imageLoader;
     private Start startMenu;
 
     //UI Objects
-    private JLabel creppe, dea;
+    private JLabel creppe, dea, bucherei;
     private JMenuBar bar;
     private JMenu books, sections, users, rented, about, logout, report;
     private JMenuItem viewBooks, viewSections, viewUsers, viewRented;
-    private JMenuItem newBook, newSection, newUser, newRent;
+    private JMenuItem newBook, newSection, newUser;
     private JPanel developers;
     private JLabel lblCreppe, lblDea;
 
@@ -35,7 +36,6 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        userName = name;
         startMenu = login;
 
         //Window size
@@ -47,82 +47,93 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         setVisible(true);
     }
 
-    public void NavigationBar() {
-        //MenuBar setup
-        bar = new JMenuBar();
-        setJMenuBar(bar);
-        getContentPane().setBackground(Color.LIGHT_GRAY);
+    private void NavigationBar() {
+        try {
+            //MenuBar setup
+            bar = new JMenuBar();
+            setJMenuBar(bar);
+            getContentPane().setBackground(Color.LIGHT_GRAY);
 
-        //Menu 'livros'
-        books = new JMenu("Livros");
-        books.setMnemonic('L');
-        bar.add(books);
-        //Add menu items
-        viewBooks = new JMenuItem("Pesquisa");
-        viewBooks.addActionListener(this);
-        books.add(viewBooks);
-        newBook = new JMenuItem("Cadastrar");
-        newBook.addActionListener(this);
-        books.add(newBook);
+            //Menu 'livros'
+            books = new JMenu("Livros");
+            books.setMnemonic('L');
+            bar.add(books);
+            //Add menu items
+            viewBooks = new JMenuItem("Pesquisa");
+            viewBooks.addActionListener(this);
+            books.add(viewBooks);
+            newBook = new JMenuItem("Cadastrar");
+            newBook.addActionListener(this);
+            books.add(newBook);
 
-        //Menu 'secao'
-        sections = new JMenu("Seção");
-        sections.setMnemonic('S');
-        bar.add(sections);
-        //Add menu items
-        viewSections = new JMenuItem("Pesquisa");
-        viewSections.addActionListener(this);
-        sections.add(viewSections);
-        newSection = new JMenuItem("Cadastrar");
-        newSection.addActionListener(this);
-        sections.add(newSection);
+            //Menu 'secao'
+            sections = new JMenu("Seção");
+            sections.setMnemonic('S');
+            bar.add(sections);
+            //Add menu items
+            viewSections = new JMenuItem("Pesquisa");
+            viewSections.addActionListener(this);
+            sections.add(viewSections);
+            newSection = new JMenuItem("Cadastrar");
+            newSection.addActionListener(this);
+            sections.add(newSection);
 
-        //Menu 'usuarios'
-        users = new JMenu("Usuários");
-        users.setMnemonic('U');
-        bar.add(users);
-        //Add menu items
-        viewUsers = new JMenuItem("Pesquisa");
-        viewUsers.addActionListener(this);
-        users.add(viewUsers);
-        newUser = new JMenuItem("Cadastrar");
-        newUser.addActionListener(this);
-        users.add(newUser);
+            //Menu 'usuarios'
+            users = new JMenu("Usuários");
+            users.setMnemonic('U');
+            bar.add(users);
+            //Add menu items
+            viewUsers = new JMenuItem("Pesquisa");
+            viewUsers.addActionListener(this);
+            users.add(viewUsers);
+            newUser = new JMenuItem("Cadastrar");
+            newUser.addActionListener(this);
+            users.add(newUser);
 
-        //Menu 'aluguel'
-        rented = new JMenu("Aluguel");
-        rented.setMnemonic('A');
-        bar.add(rented);
-        //Add menu items
-        viewRented = new JMenuItem("Pesquisa");
-        viewRented.addActionListener(this);
-        rented.add(viewRented);
-        newRent = new JMenuItem("Cadastrar");
-        newRent.addActionListener(this);
-        rented.add(newRent);
+            //Menu 'aluguel'
+            rented = new JMenu("Aluguel");
+            rented.setMnemonic('A');
+            bar.add(rented);
+            //Add menu items
+            viewRented = new JMenuItem("Pesquisa");
+            viewRented.addActionListener(this);
+            rented.add(viewRented);
 
-        //Menu 'relatorio'
-        report = new JMenu("Relatório");
-        report.setMnemonic('R');
-        report.addMenuListener(this);
-        bar.add(report);
+            //Menu 'relatorio'
+            report = new JMenu("Relatório");
+            report.setMnemonic('R');
+            report.addMenuListener(this);
+            bar.add(report);
 
-        //Menu 'sobre'
-        about = new JMenu("Desenvolvedores");
-        about.setMnemonic('D');
-        about.addMenuListener(this);
-        bar.add(about);
+            //Menu 'sobre'
+            about = new JMenu("Desenvolvedores");
+            about.setMnemonic('D');
+            about.addMenuListener(this);
+            bar.add(about);
 
-        //Menu 'logout'
-        logout = new JMenu("Logout");
-        logout.setMnemonic('O');
-        logout.addMenuListener(this);
-        bar.add(logout);
+            //Menu 'logout'
+            logout = new JMenu("Logout");
+            logout.setMnemonic('O');
+            logout.addMenuListener(this);
+            bar.add(logout);
 
-        DevFrame();
+            //Logo
+            imageLoader = null;
+            imageLoader = ImageIO.read(getClass().getResource("/images/logo.png"));
+            bucherei = new JLabel(new ImageIcon(imageLoader));
+            bucherei.setBounds(50, 90, 707, 240);
+            add(bucherei);
+
+            DevFrame();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro no carregamento dos gráficos: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
     }
 
-    public void DevFrame() {
+    private void DevFrame() {
         try {
             developers = new JPanel();
             developers.setSize(getSize());
@@ -130,13 +141,13 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             developers.setVisible(false);
             add(developers);
 
+            imageLoader = null;
             imageLoader = ImageIO.read(getClass().getResource("/images/creppe.png"));
             creppe = new JLabel(new ImageIcon(imageLoader));
             creppe.setBounds(40, 10, 300, 300);
             developers.add(creppe);
 
             imageLoader = null;
-
             imageLoader = ImageIO.read(getClass().getResource("/images/dea.png"));
             dea = new JLabel(new ImageIcon(imageLoader));
             dea.setBounds(440, 10, 300, 300);
@@ -178,9 +189,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
         } else if (e.getSource() == newUser) {
             new NewUser(this);
         } else if (e.getSource() == viewRented) {
-            //new ViewRent(this);
-        } else if (e.getSource() == newRent) {
-            //new NewRent(this);
+            new ViewRent(this);
         }
 
         setVisible(false);
@@ -189,6 +198,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     public void menuSelected(MenuEvent e) {
         if (e.getSource() == about) {
             developers.setVisible(true);
+            bucherei.setVisible(false);
         } else if (e.getSource() == logout) {
             int option = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?");
             if (option == JOptionPane.YES_OPTION) {
@@ -202,6 +212,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
 
     public void menuDeselected(MenuEvent e) {
         developers.setVisible(false);
+        bucherei.setVisible(true);
     }
 
     public void menuCanceled(MenuEvent e) {

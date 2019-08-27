@@ -3,6 +3,7 @@ package views.books;
 import connections.*;
 import tools.*;
 import views.*;
+import views.rents.NewRent;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -23,10 +24,9 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
     private JTextField txtSearch;
     private JComboBox cmbSections;
     private JSpinner numSearch;
-    private SpinnerModel spinnerModel;
-    private JButton btnEdit, btnExit, btnSearch, btnDelete;
     private JRadioButton radTitle, radAuthor, radPublisher, radYear, radSection, radAll;
     private ButtonGroup grpSearch;
+    private JButton btnEdit, btnExit, btnSearch, btnDelete, btnRent;
 
     public ViewBook(AdminMenu menu) {
         //Window setup
@@ -95,7 +95,7 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
             btnSearch.addActionListener(this);
             add(btnSearch);
 
-            spinnerModel = new SpinnerNumberModel(0, 0, 2019, 1);
+            SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 2019, 1);
             numSearch = new JSpinner();
             numSearch.setBounds(660, 130, 80, 25);
             numSearch.setVisible(false);
@@ -165,10 +165,17 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
 
             btnDelete = new JButton("Deletar livro");
             btnDelete.setBounds(620, 310, 160, 25);
-            btnDelete.setMnemonic('E');
+            btnDelete.setMnemonic('D');
             btnDelete.setEnabled(false);
             btnDelete.addActionListener(this);
             add(btnDelete);
+
+            btnRent = new JButton("Alugar livro");
+            btnRent.setBounds(620, 340, 160, 25);
+            btnRent.setMnemonic('A');
+            btnRent.setEnabled(false);
+            btnRent.addActionListener(this);
+            add(btnRent);
 
             btnExit = new JButton("Sair");
             btnExit.setBounds(620, 428, 160, 30);
@@ -248,11 +255,25 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
         }
     }
 
+    private void SendBookID(int localtion) {
+        Books search = new Books();
+        int sendID = search.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
+
+        if(localtion == 1) { //edit
+            new EditBook(this, sendID, table.getValueAt(selectedRow, 5).toString());
+        } else if(localtion == 2) { //rent
+            new NewRent(adminMenu, sendID);
+        }
+
+        dispose();
+    }
+
     private void ClearSelectedBook() {
         selectedRow = -1;
         lblSelected.setText("Nenhum livro selecionado!");
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
+        btnRent.setEnabled(false);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -260,12 +281,11 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
             DoSearch();
             ClearSelectedBook();
         } else if (e.getSource() == btnEdit) {
-            Books search = new Books();
-            int sendID = search.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
-            new EditBook(this, sendID, table.getValueAt(selectedRow, 5).toString());
-            dispose();
+           SendBookID(1);
         } else if (e.getSource() == btnDelete) {
             DeleteBook();
+        } else if(e.getSource() == btnRent) {
+            SendBookID(2);
         } else if (e.getSource() == btnExit) {
             adminMenu.setVisible(true);
             dispose();
@@ -301,6 +321,7 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
         lblSelected.setText("Livro '" + table.getValueAt(row, 0) + "' selecionado!");
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
+        btnRent.setEnabled(true);
         selectedRow = row;
     }
 

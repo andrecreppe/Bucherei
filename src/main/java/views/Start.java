@@ -3,7 +3,6 @@
 * tool tips texts
 * comment the code
 * alterar senha em uma aba separada
-* não deletar seção que tem ja livro cadastrado
 */
 
 package views;

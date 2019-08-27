@@ -118,10 +118,10 @@ public class EditSection extends JFrame implements ActionListener {
 
         ArrayList<String> sectionData = section.Select(sectionID);
 
-        txtName.setText(sectionData.get(0));
-        txaDescription.setText(sectionData.get(1));
+        txtName.setText(sectionData.get(1));
+        txaDescription.setText(sectionData.get(2));
 
-        if(sectionData.get(2).equals("1")) {
+        if(sectionData.get(3).equals("1")) {
             radActive.setSelected(true);
         } else {
             radUnactive.setSelected(true);
