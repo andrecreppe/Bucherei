@@ -19,7 +19,7 @@ public class NewRent extends JFrame implements ActionListener {
 
     //UI Objects
     private JLabel lblUser, lblBook, lblPickDay;
-    private JComboBox cmbUsers, cmbBooks;
+    private JComboBox cmbUsers, cmbUsersID, cmbBooks, cmbBooksID;
     private JDatePickerImpl dateRented;
     private JButton btnAdd, btnClear, btnCancel;
 
@@ -47,7 +47,6 @@ public class NewRent extends JFrame implements ActionListener {
 
     private void InitializeUI() {
         try {
-            int index = -1;
             Books bookDatabase = new Books();
             Users userDatabase = new Users();
 
@@ -58,15 +57,23 @@ public class NewRent extends JFrame implements ActionListener {
             lblBook.setBounds(300, firstY, 100, 30);
             add(lblBook);
 
+            cmbBooksID = new JComboBox();
+            cmbBooksID.setVisible(false);
+            for (int i = 0; i < books.size(); i += 7) {
+                cmbBooksID.addItem(books.get(i));
+            }
+            add(cmbBooksID);
+
             cmbBooks = new JComboBox();
             cmbBooks.setBounds(350, firstY, 200, 30);
             for (int i = 0; i < books.size(); i += 7) {
                 cmbBooks.addItem(books.get(1 + i));
+
                 if (books.get(i).equals(bookID + "")) {
-                    index = i / 7;
+                    cmbBooks.setSelectedIndex(i / 7);
                 }
             }
-            cmbBooks.setSelectedIndex(index);
+            cmbBooks.addActionListener(this);
             add(cmbBooks);
 
             firstY += incY;
@@ -80,7 +87,15 @@ public class NewRent extends JFrame implements ActionListener {
             for (int i = 0; i < users.size(); i += 6) {
                 cmbUsers.addItem(users.get(i));
             }
+            cmbUsers.addActionListener(this);
             add(cmbUsers);
+
+            cmbUsersID = new JComboBox();
+            cmbUsersID.setVisible(false);
+            for (int i = 0; i < users.size(); i += 6) {
+                cmbUsers.addItem(users.get(i));
+            }
+            add(cmbUsersID);
 
             firstY += incY;
 

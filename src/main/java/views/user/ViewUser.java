@@ -219,10 +219,10 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
 
         for (int i = 0; i < items.size(); i += 6) {
             Object[] data = {
-                    items.get(i),
                     items.get(i + 1),
                     items.get(i + 2),
                     items.get(i + 3),
+                    items.get(i + 4),
                     items.get(i + 5).equals("1") ? "Sim" : "Não",
                     "aaaa"
             };

@@ -236,6 +236,7 @@ public class Users {
 
             search = new ArrayList<String>();
             while (result.next()) {
+                search.add(result.getString("id"));
                 search.add(result.getString("name"));
                 search.add(result.getString("surname"));
                 search.add(result.getString("cpf"));

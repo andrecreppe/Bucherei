@@ -153,11 +153,11 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             dea.setBounds(440, 10, 300, 300);
             developers.add(dea);
 
-            lblCreppe = new JLabel("<html>André Zanardi Creppe<br/><br/>Número 01</html>");
+            lblCreppe = new JLabel("01 - André Zanardi Creppe");
             lblCreppe.setBounds(125, 290, 300, 100);
             developers.add(lblCreppe);
 
-            lblDea = new JLabel("<html>Thiago Prado Dalla Dea<br/><br/>Número 32</html>");
+            lblDea = new JLabel("32 - Thiago Prado Dalla Dea");
             lblDea.setBounds(530, 290, 300, 100);
             developers.add(lblDea);
 
@@ -168,11 +168,6 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
 
             JOptionPane.showMessageDialog(null, msg);
         }
-    }
-
-    public void Dashboard() {
-        //livros alugados
-        //usuarios picaretas
     }
 
     public void actionPerformed(ActionEvent e) {

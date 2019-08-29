@@ -19,7 +19,7 @@ public class NewBook extends JFrame implements ActionListener {
     private JTextField txtTitle, txtAuthor, txtPublisher;
     private JSpinner numYear, numPages;
     private SpinnerModel yearModel, pagesModel;
-    private JComboBox cmbSections;
+    private JComboBox cmbSections, cmbSectionsID;
     private JButton btnAdd, btnClear, btnCancel;
 
     public NewBook(AdminMenu menu) {
@@ -109,7 +109,15 @@ public class NewBook extends JFrame implements ActionListener {
             for (int i = 0; i < sections.size(); i += 4) {
                 cmbSections.addItem(sections.get(i + 1));
             }
+            cmbSections.addActionListener(this);
             add(cmbSections);
+
+            cmbSectionsID = new JComboBox();
+            cmbSectionsID.setVisible(false);
+            for (int i = 0; i < sections.size(); i += 4) {
+                cmbSectionsID.addItem(sections.get(i));
+            }
+            add(cmbSectionsID);
 
             firstY += incY + 25;
 
@@ -154,20 +162,18 @@ public class NewBook extends JFrame implements ActionListener {
         dispose();
     }
 
-    private void AddNewUser() {
+    private void AddNewBook() {
         int validation = AllFieldsOK();
 
         if (validation == 0) {
             Books inclusion = new Books();
-            Sections section = new Sections();
-            ArrayList<String> sct = section.Select(cmbSections.getSelectedItem().toString(), 1);
 
             int year = 0, pages = 0, id = 0;
 
             try {
                 year = Integer.parseInt(numYear.getValue().toString());
                 pages = Integer.parseInt(numPages.getValue().toString());
-                id = Integer.parseInt(sct.get(0));
+                id = Integer.parseInt(cmbSectionsID.getSelectedItem().toString());
             } catch (Exception e) {
                 String msg = "Oops, aconteceu algum erro!";
                 msg += "\n\nErro na conversão numérica: " + e.getMessage();
@@ -225,11 +231,13 @@ public class NewBook extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
-            AddNewUser();
+            AddNewBook();
         } else if (e.getSource() == btnClear) {
             ClearFields();
         } else if (e.getSource() == btnCancel) {
             Exit();
+        } else if (e.getSource() == cmbSections) {
+            cmbSectionsID.setSelectedIndex(cmbSections.getSelectedIndex());
         }
     }
 }
