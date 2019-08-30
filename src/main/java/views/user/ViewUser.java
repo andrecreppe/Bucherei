@@ -217,17 +217,24 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
 
         model.setRowCount(0);
 
-        for (int i = 0; i < items.size(); i += 6) {
+        for (int i = 0; i < items.size(); i += 7) {
             Object[] data = {
                     items.get(i + 1),
                     items.get(i + 2),
                     items.get(i + 3),
                     items.get(i + 4),
                     items.get(i + 5).equals("1") ? "Sim" : "Não",
-                    "aaaa"
+                    GetUserRentedBooks(Integer.parseInt(items.get(i))),
             };
             model.addRow(data);
         }
+    }
+
+    private int GetUserRentedBooks(int userID) {
+        Rented userRentedBooks = new Rented();
+        userRentedBooks.Select(userID);
+        //NÃO ACABADO!!!!!!!!!!!
+        return 0;
     }
 
     private void DeleteUser() {

@@ -15,7 +15,8 @@ public class NewRent extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
     private AdminMenu adminMenu;
-    private int incY, firstY, bookID;
+    private int incY, firstY;
+    private String bookName;
 
     //UI Objects
     private JLabel lblUser, lblBook, lblPickDay;
@@ -23,7 +24,7 @@ public class NewRent extends JFrame implements ActionListener {
     private JDatePickerImpl dateRented;
     private JButton btnAdd, btnClear, btnCancel;
 
-    public NewRent(AdminMenu menu, int id) {
+    public NewRent(AdminMenu menu, String name) {
         //Window setup
         super("Bücherei: Alugar um livro");
         setLayout(null);
@@ -35,7 +36,7 @@ public class NewRent extends JFrame implements ActionListener {
         setBounds(wConfig.getCoordinateX(), wConfig.getCoordinateY(), wConfig.getWidth(), wConfig.getHeight());
 
         adminMenu = menu;
-        bookID = id;
+        bookName = name;
 
         firstY = 120;
         incY = 80;
@@ -66,13 +67,15 @@ public class NewRent extends JFrame implements ActionListener {
 
             cmbBooks = new JComboBox();
             cmbBooks.setBounds(350, firstY, 200, 30);
+            int index = -1;
             for (int i = 0; i < books.size(); i += 7) {
                 cmbBooks.addItem(books.get(1 + i));
 
-                if (books.get(i).equals(bookID + "")) {
-                    cmbBooks.setSelectedIndex(i / 7);
+                if (books.get(i + 1).equals(bookName + "")) {
+                    index = i / 7;
                 }
             }
+            cmbBooks.setSelectedIndex(index);
             cmbBooks.addActionListener(this);
             add(cmbBooks);
 
@@ -84,16 +87,17 @@ public class NewRent extends JFrame implements ActionListener {
 
             cmbUsers = new JComboBox();
             cmbUsers.setBounds(350, firstY, 200, 30);
-            for (int i = 0; i < users.size(); i += 6) {
-                cmbUsers.addItem(users.get(i));
+            for (int i = 0; i < users.size(); i += 7) {
+                cmbUsers.addItem(users.get(i + 1));
             }
             cmbUsers.addActionListener(this);
+            cmbUsers.setSelectedIndex(-1);
             add(cmbUsers);
 
             cmbUsersID = new JComboBox();
             cmbUsersID.setVisible(false);
-            for (int i = 0; i < users.size(); i += 6) {
-                cmbUsers.addItem(users.get(i));
+            for (int i = 0; i < users.size(); i += 7) {
+                cmbUsersID.addItem(users.get(i));
             }
             add(cmbUsersID);
 
@@ -140,8 +144,6 @@ public class NewRent extends JFrame implements ActionListener {
 
             JOptionPane.showMessageDialog(null, msg);
         }
-
-        ClearFields();
     }
 
     private void ClearFields() {

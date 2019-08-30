@@ -258,11 +258,12 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
     private void SendBookID(int localtion) {
         Books search = new Books();
         int sendID = search.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
+        String sendName = table.getValueAt(selectedRow, 0).toString();
 
         if(localtion == 1) { //edit
             new EditBook(this, sendID, table.getValueAt(selectedRow, 5).toString());
         } else if(localtion == 2) { //rent
-            new NewRent(adminMenu, sendID);
+            new NewRent(adminMenu, sendName);
         }
 
         dispose();

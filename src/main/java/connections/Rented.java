@@ -93,6 +93,36 @@ public class Rented {
         JOptionPane.showMessageDialog(null, msg);
     }
 
+    public ArrayList<String> Select() {
+        sql = "";
+        result = null;
+        search = null;
+
+        try {
+            sql = "SELECT * FROM rented ORDER BY id";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("id_user"));
+                search.add(result.getString("id_book"));
+                search.add(result.getString("date_rented"));
+                search.add(result.getString("date_returned"));
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
     public ArrayList<String> Select(int user) {
         sql = "";
         result = null;
