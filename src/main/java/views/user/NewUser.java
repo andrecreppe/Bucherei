@@ -4,18 +4,21 @@ import connections.*;
 import tools.*;
 import views.*;
 
+import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.event.*;
+import java.awt.image.*;
 
-public class NewUser extends JFrame implements ActionListener {
+public class NewUser extends JFrame implements ActionListener, ItemListener {
     //Control Variables
     private WindowConfiguration wConfig;
     private AdminMenu adminMenu;
+    private BufferedImage imageLoader;
     private int incY, firstY;
 
     //UI Objects
-    private JLabel lblName, lblSurname, lblCPF, lblEmail, lblPassword, lblIcon, lblAdmin;
+    private JLabel lblName, lblSurname, lblCPF, lblEmail, lblPassword, lblIcon, lblAdmin, lblImage, lblImageText;
     private JTextField txtName, txtSurname, txtEmail;
     private JFormattedTextField mskCPF;
     private MaskFormatter mskMaker;
@@ -108,10 +111,20 @@ public class NewUser extends JFrame implements ActionListener {
 
             cmbIcons = new JComboBox();
             cmbIcons.setBounds(350, firstY, 200, 30);
+            cmbIcons.addItemListener(this);
             cmbIcons.addItem("Nenhum");
-            cmbIcons.addItem("Astronauta");
-            cmbIcons.addItem("Gatinho");
+            cmbIcons.addItem("Unicórnio");
+            cmbIcons.addItem("Mago Mágico");
+            cmbIcons.addItem("Fantasminha");
+            cmbIcons.addItem("Dino");
+            cmbIcons.addItem("Zumbi");
+            cmbIcons.addItem("Capitão Pirata");
+            cmbIcons.setSelectedIndex(0);
             add(cmbIcons);
+
+            lblImageText = new JLabel("Preview do ícone");
+            lblImageText.setBounds(75, 120, 120, 30);
+            add(lblImageText);
 
             firstY += incY;
 
@@ -156,7 +169,7 @@ public class NewUser extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, msg);
         }
 
-        ClearFields();
+        //ClearFields();
     }
 
     private void ClearFields() {
@@ -243,6 +256,29 @@ public class NewUser extends JFrame implements ActionListener {
             ClearFields();
         } else if (e.getSource() == btnCancel) {
             Exit();
+        }
+    }
+
+    public void itemStateChanged(ItemEvent e) {
+        if(e.getSource() == cmbIcons) {
+            try {
+                String imageNumber = cmbIcons.getSelectedIndex() + "";
+                imageLoader = null;
+                imageLoader = ImageIO.read(getClass().getResource("/images/" + imageNumber + ".jpg"));
+
+                if(lblImage != null) {
+                    lblImage.setIcon(null);
+                }
+
+                lblImage = new JLabel(new ImageIcon(imageLoader));
+                lblImage.setBounds(80, 150, 100, 100);
+                add(lblImage);
+            } catch (Exception ee) {
+                String msg = "Oops, aconteceu algum erro!";
+                msg += "\n\nErro no carregamento das imagens: " + ee.getMessage();
+
+                JOptionPane.showMessageDialog(null, msg);
+            }
         }
     }
 }

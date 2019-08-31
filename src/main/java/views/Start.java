@@ -1,10 +1,3 @@
-/* TO-DO LIST:
-* set font to the entire program
-* tool tips texts
-* comment the code
-* alterar senha em uma aba separada
-*/
-
 package views;
 
 import connections.*;
@@ -30,7 +23,7 @@ public class Start extends JFrame implements ActionListener {
 
     public Start() {
         //Window setup
-        super("Bücherei");
+        super("Bücherei: Login");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
