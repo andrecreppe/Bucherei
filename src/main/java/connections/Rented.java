@@ -2,12 +2,11 @@ package connections;
 
 import javax.swing.*;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 public class Rented {
     //Fields Variables
-    private Date dateRented, dateReturned;
+    private String dateRented, dateReturned;
     private int idUser, idBook;
 
     //SQL Variables
@@ -37,11 +36,11 @@ public class Rented {
         this.idBook = b;
     }
 
-    public void setDateRented(Date d) {
+    public void setDateRented(String d) {
         this.dateRented = d;
     }
 
-    public void setDateReturned(Date d) {
+    public void setDateReturned(String d) {
         this.dateReturned = d;
     }
 
@@ -56,7 +55,7 @@ public class Rented {
             querry = localhost.GetConnection().prepareStatement(sql);
             querry.setInt(1, idUser);
             querry.setInt(2, idBook);
-            querry.setDate(3, dateRented);
+            querry.setString(3, dateRented);
 
             querry.execute();
 
@@ -106,6 +105,7 @@ public class Rented {
 
             search = new ArrayList<String>();
             while (result.next()) {
+                search.add(result.getString("id"));
                 search.add(result.getString("id_user"));
                 search.add(result.getString("id_book"));
                 search.add(result.getString("date_rented"));
@@ -123,24 +123,88 @@ public class Rented {
         return search;
     }
 
-    public ArrayList<String> Select(int user) {
+    public ArrayList<String> Select(int op) {
         sql = "";
         result = null;
         search = null;
 
+        String field = "";
+
         try {
-            sql = "SELECT * FROM rented WHERE user_id=? ORDER BY name";
+            if (op == 1) {
+                field = "date_returned is NULL";
+            } else if (op == 2) {
+                field = "date_returned is NOT NULL";
+            }
+            sql = "SELECT * FROM rented WHERE date_returned=" + field + " ORDER BY id";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("id"));
+                search.add(result.getString("id_user"));
+                search.add(result.getString("id_book"));
+                search.add(result.getString("date_rented"));
+                search.add(result.getString("date_returned"));
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
+    public int GetRentID(int userID, int bookID) {
+        sql = "";
+        result = null;
+
+        int search = -1;
+
+        try {
+            sql = "SELECT id FROM rented WHERE id_user=? AND id_book=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setInt(1, userID);
+            querry.setInt(2, bookID);
+            result = querry.executeQuery();
+
+            while (result.next()) {
+                search = result.getInt("id");
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
+    public int GetUserManyBooks(int user) {
+        sql = "";
+        result = null;
+
+        int search = -1;
+
+        try {
+            sql = "SELECT COUNT(*) as qtd FROM rented WHERE id_user=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
             querry.setInt(1, user);
             result = querry.executeQuery();
 
-            search = new ArrayList<String>();
             while (result.next()) {
-                search.add(result.getString("id_user"));
-                search.add(result.getString("id_book"));
-                search.add(result.getString("date_rented"));
-                search.add(result.getString("date_returned"));
+                search = result.getInt("qtd");
             }
 
             querry.close();

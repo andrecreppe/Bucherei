@@ -232,14 +232,17 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
 
     private int GetUserRentedBooks(int userID) {
         Rented userRentedBooks = new Rented();
-        userRentedBooks.Select(userID);
-        //NÃO ACABADO!!!!!!!!!!!
-        return 0;
+
+        int qtd = userRentedBooks.GetUserManyBooks(userID);
+        ;
+
+        return qtd;
     }
 
     private void DeleteUser() {
         int option = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.");
+                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.",
+                "Bücherei", JOptionPane.YES_NO_OPTION);
 
         if (option == JOptionPane.YES_OPTION) {
             Users operation = new Users();
@@ -248,6 +251,8 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
             operation.Delete(userId);
 
             ClearSelectedUser();
+
+            DoSearch();
         }
     }
 

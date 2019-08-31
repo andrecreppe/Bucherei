@@ -94,9 +94,9 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
             radIsUnactive.setVisible(false);
             add(radIsUnactive);
 
-            grpSearch = new ButtonGroup();
-            grpSearch.add(radIsActive);
-            grpSearch.add(radIsUnactive);
+            grpActive = new ButtonGroup();
+            grpActive.add(radIsActive);
+            grpActive.add(radIsUnactive);
 
             lblSearch = new JLabel("Filtro por:");
             lblSearch.setBounds(665, 5, 100, 30);
@@ -209,12 +209,15 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
 
         int option = JOptionPane.showConfirmDialog(null,
                 "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) +
-                        "'?\nEssa ação não poderá ser desfeita.");
+                        "'?\nEssa ação não poderá ser desfeita.",
+                "Bücherei", JOptionPane.YES_NO_OPTION);
 
         if (option == JOptionPane.YES_OPTION) {
             operation.Delete(id);
 
             ClearSelectedSection();
+
+            DoSearch();
         }
     }
 

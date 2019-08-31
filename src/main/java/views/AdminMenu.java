@@ -195,7 +195,8 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             developers.setVisible(true);
             bucherei.setVisible(false);
         } else if (e.getSource() == logout) {
-            int option = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?");
+            int option = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?",
+                    "Bücherei", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 startMenu.setVisible(true);
                 dispose();

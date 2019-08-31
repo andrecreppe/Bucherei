@@ -145,7 +145,6 @@ public class NewSection extends JFrame implements ActionListener {
 
     private int AllFieldsOK() {
         int fieldNumber = 0;
-        String cpf;
 
         if (txtName.getText().length() < 1) {
             fieldNumber = 1;

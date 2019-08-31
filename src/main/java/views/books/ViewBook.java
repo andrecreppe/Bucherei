@@ -243,7 +243,8 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
 
     private void DeleteBook() {
         int option = JOptionPane.showConfirmDialog(null,
-                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.");
+                "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.",
+                "Bücherei", JOptionPane.YES_NO_OPTION);
 
         if (option == JOptionPane.YES_OPTION) {
             Books operation = new Books();
@@ -252,6 +253,8 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
             operation.Delete(id);
 
             ClearSelectedBook();
+
+            DoSearch();
         }
     }
 

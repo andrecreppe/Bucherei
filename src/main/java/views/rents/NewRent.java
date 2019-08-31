@@ -1,15 +1,14 @@
 package views.rents;
 
+import com.toedter.calendar.*;
 import connections.*;
-import org.jdatepicker.impl.*;
 import tools.*;
 import views.*;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.text.*;
 import java.util.*;
-
-//CAMPO DE DATA BUGADOOOOOO
 
 public class NewRent extends JFrame implements ActionListener {
     //Control Variables
@@ -21,7 +20,7 @@ public class NewRent extends JFrame implements ActionListener {
     //UI Objects
     private JLabel lblUser, lblBook, lblPickDay;
     private JComboBox cmbUsers, cmbUsersID, cmbBooks, cmbBooksID;
-    private JDatePickerImpl dateRented;
+    private JDateChooser dateRented;
     private JButton btnAdd, btnClear, btnCancel;
 
     public NewRent(AdminMenu menu, String name) {
@@ -107,17 +106,17 @@ public class NewRent extends JFrame implements ActionListener {
             lblPickDay.setBounds(255, firstY, 100, 30);
             add(lblPickDay);
 
-            Date today = new Date();
-            UtilDateModel model = new UtilDateModel();
-            model.setDate(today.getYear(), today.getMonth(), today.getDay());
-            Properties p = new Properties();
-            p.put("text.today", "Today");
-            p.put("text.month", "Month");
-            p.put("text.year", "Year");
-            JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-            dateRented = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+            dateRented = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
+            dateRented.setDate(new Date());
             dateRented.setBounds(370, firstY, 110, 30);
+            dateRented.getDateEditor().getUiComponent().addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    ((JTextFieldDateEditor) e.getSource()).selectAll();
+                }
+            });
             add(dateRented);
+
 
             firstY += incY + 25;
 
@@ -149,7 +148,7 @@ public class NewRent extends JFrame implements ActionListener {
     private void ClearFields() {
         cmbBooks.setSelectedIndex(-1);
         cmbUsers.setSelectedIndex(-1);
-        //dateRented.set
+        dateRented.setDate(new Date());
     }
 
     private void Exit() {
@@ -158,36 +157,32 @@ public class NewRent extends JFrame implements ActionListener {
     }
 
     private void AddNewRentedBook() {
-//        int validation = AllFieldsOK();
-//
-//        if (validation == 0) {
-//            Sections inclusion = new Sections();
-//
-//            inclusion.setName(txtName.getText());
-//            inclusion.setDescription(txaDescription.getText());
-//
-//            if (radActive.isSelected()) {
-//                inclusion.setActive(true);
-//            } else {
-//                inclusion.setActive(false);
-//            }
-//
-//            inclusion.Insert();
-//
-//            Exit();
-//        } else {
-//            JOptionPane.showMessageDialog(null,
-//                    "Existem campos sem preencher!\nComeça no Campo " + validation + ". Preencha-o.");
-//        }
+        int validation = AllFieldsOK();
+
+        if (validation == 0) {
+            Rented inclusion = new Rented();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = "";
+
+            inclusion.setIdBook(Integer.parseInt(cmbBooksID.getSelectedItem().toString()));
+            inclusion.setIdUser(Integer.parseInt(cmbUsersID.getSelectedItem().toString()));
+            inclusion.setDateRented(dateFormat.format(dateRented.getDate()));
+
+            inclusion.Insert();
+
+            Exit();
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Existem campos sem preencher!\nComeça no Campo " + validation + ". Preencha-o.");
+        }
     }
 
     private int AllFieldsOK() {
         int fieldNumber = 0;
-        String cpf;
 
         if (cmbBooks.getSelectedIndex() < 0) {
             fieldNumber = 1;
-        } else if (cmbBooks.getSelectedIndex() < 0) {
+        } else if (cmbUsers.getSelectedIndex() < 0) {
             fieldNumber = 2;
         }
 
