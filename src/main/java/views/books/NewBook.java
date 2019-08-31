@@ -35,8 +35,8 @@ public class NewBook extends JFrame implements ActionListener {
 
         adminMenu = menu;
 
-        firstY = 30;
-        incY = 60;
+        firstY = 20;
+        incY = 55;
 
         InitializeUI();
 

@@ -1,6 +1,7 @@
 package views;
 
 import tools.*;
+import tools.reports.RelatorioTeste;
 import views.books.*;
 import views.rents.NewRent;
 import views.rents.ViewRent;
@@ -202,7 +203,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
                 dispose();
             }
         } else if (e.getSource() == report) {
-            System.out.println("fazer relatoriooooo");
+            new RelatorioTeste();
         }
     }
 

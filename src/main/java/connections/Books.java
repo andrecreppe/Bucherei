@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Books {
     //Fields Variables
-    private String name, author, publisher;
+    private String name, author, publisher, path;
     private int year, pages, section;
 
     //SQL Variables
@@ -20,6 +20,7 @@ public class Books {
         name = "";
         author = "";
         publisher = "";
+        path = "";
         year = 0;
         pages = 0;
         section = 0;
@@ -42,6 +43,10 @@ public class Books {
         this.publisher = p;
     }
 
+    public void setPath(String p) {
+        this.path = p;
+    }
+
     public void setYear(int y) {
         this.year = y;
     }
@@ -60,7 +65,7 @@ public class Books {
         msg = "";
 
         try {
-            sql = "INSERT INTO books VALUES(DEFAULT, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO books VALUES(DEFAULT, ?, ?, ?, ?, ?, ?, ?)";
 
             querry = localhost.GetConnection().prepareStatement(sql);
             querry.setString(1, name);
@@ -68,7 +73,8 @@ public class Books {
             querry.setInt(3, year);
             querry.setString(4, publisher);
             querry.setInt(5, pages);
-            querry.setInt(6, section);
+            querry.setString(6, path);
+            querry.setInt(7, section);
 
             querry.execute();
 
@@ -89,7 +95,7 @@ public class Books {
 
         try {
             sql = "UPDATE books SET " +
-                    "name=?, author=?, publisher=?, year=?, pages=?, id_section=? " +
+                    "name=?, author=?, publisher=?, year=?, pages=?, image_path=?, id_section=? " +
                     "WHERE id=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
@@ -98,8 +104,9 @@ public class Books {
             querry.setString(3, publisher);
             querry.setInt(4, year);
             querry.setInt(5, pages);
-            querry.setInt(6, section);
-            querry.setInt(7, id);
+            querry.setString(6, path);
+            querry.setInt(7, section);
+            querry.setInt(8, id);
 
             querry.execute();
 
@@ -155,6 +162,7 @@ public class Books {
                 search.add(result.getString("publisher"));
                 search.add(result.getString("year"));
                 search.add(result.getString("pages"));
+                search.add(result.getString("image_path"));
                 search.add(result.getString("id_section"));
             }
 
@@ -243,6 +251,7 @@ public class Books {
                 search.add(result.getString("publisher"));
                 search.add(result.getString("year"));
                 search.add(result.getString("pages"));
+                search.add(result.getString("image_path"));
                 search.add(result.getString("id_section"));
             }
 

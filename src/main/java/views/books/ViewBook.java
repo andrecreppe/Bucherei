@@ -228,14 +228,14 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
 
         model.setRowCount(0);
 
-        for (int i = 0; i < items.size(); i += 7) {
+        for (int i = 0; i < items.size(); i += 8) {
             Object[] data = {
                     items.get(i + 1),
                     items.get(i + 2),
                     items.get(i + 3),
                     items.get(i + 4),
                     items.get(i + 5),
-                    section.Select(Integer.parseInt(items.get(i + 6))).get(1)
+                    section.Select(Integer.parseInt(items.get(i + 7))).get(1)
             };
             model.addRow(data);
         }

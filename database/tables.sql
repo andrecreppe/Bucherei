@@ -29,13 +29,14 @@ CREATE TABLE sections
 DROP TABLE IF EXISTS books;
 CREATE TABLE books
 (
-    id          SERIAL      NOT NULL PRIMARY KEY,
-    name        VARCHAR(60) NOT NULL,
-    author      VARCHAR(60) NOT NULL,
-    year        INTEGER     NOT NULL,
-    publisher   VARCHAR(60) NOT NULL,
-    pages       INTEGER     NOT NULL,
-    id_section  INTEGER     NOT NULL REFERENCES sections
+    id          SERIAL          NOT NULL PRIMARY KEY,
+    name        VARCHAR(60)     NOT NULL,
+    author      VARCHAR(60)     NOT NULL,
+    year        INTEGER         NOT NULL,
+    publisher   VARCHAR(60)     NOT NULL,
+    pages       INTEGER         NOT NULL,
+    image_path  VARCHAR(200)    NOT NULL,
+    id_section  INTEGER         NOT NULL REFERENCES sections
 );
 
 /*----------------------------------------------------*/
