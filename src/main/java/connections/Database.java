@@ -7,7 +7,7 @@ public class Database {
     private String url, user, passwd, database;
     private Connection con;
 
-    Database() {
+    public Database() {
         try {
             database = "castro";
             url = "jdbc:mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC";
