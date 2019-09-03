@@ -194,7 +194,7 @@ public class EditUser extends JFrame implements ActionListener, ItemListener {
         txtSurname.setText("");
         mskCPF.setText("");
         txtEmail.setText("");
-        cmbIcons.setSelectedIndex(-1);
+        cmbIcons.setSelectedIndex(0);
         radioGroup.clearSelection();
     }
 

@@ -217,4 +217,30 @@ public class Rented {
 
         return search;
     }
+
+    public void AddReturnDate(int id) {
+        sql = "";
+        msg = "";
+
+        try {
+            sql = "UPDATE rented SET " +
+                    "date_returned=? " +
+                    "WHERE id=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setString(1, dateReturned);
+            querry.setInt(2, id);
+
+            querry.execute();
+
+            querry.close();
+
+            msg = "Aluguel alterado com sucesso!";
+        } catch (Exception e) {
+            msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na alteração: " + e.getMessage();
+        }
+
+        JOptionPane.showMessageDialog(null, msg);
+    }
 }

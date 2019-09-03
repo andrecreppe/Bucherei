@@ -178,7 +178,7 @@ public class NewUser extends JFrame implements ActionListener, ItemListener {
         mskCPF.setText("");
         txtEmail.setText("");
         txtPassword.setText("");
-        cmbIcons.setSelectedIndex(-1);
+        cmbIcons.setSelectedIndex(0);
         radioGroup.clearSelection();
     }
 

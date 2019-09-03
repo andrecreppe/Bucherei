@@ -240,6 +240,14 @@ public class ViewUser extends JFrame implements ActionListener, ItemListener, Mo
     }
 
     private void DeleteUser() {
+        String qtd = table.getValueAt(selectedRow, 5).toString();
+
+        if(Integer.parseInt(qtd) > 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Ação bloqueada!\nNão é possivel deletar um usuário com aluguéis cadastrados!");
+            return;
+        }
+
         int option = JOptionPane.showConfirmDialog(null,
                 "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.",
                 "Bücherei", JOptionPane.YES_NO_OPTION);

@@ -7,6 +7,7 @@ import views.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.event.*;
+import java.text.*;
 import java.util.*;
 
 public class ViewRent extends JFrame implements ActionListener, MouseListener {
@@ -53,8 +54,8 @@ public class ViewRent extends JFrame implements ActionListener, MouseListener {
                     return false;
                 }
             };
-            model.addColumn("Livro");
             model.addColumn("Usuário");
+            model.addColumn("Livro");
             model.addColumn("Data retirada");
             model.addColumn("Data devolução");
 
@@ -139,6 +140,16 @@ public class ViewRent extends JFrame implements ActionListener, MouseListener {
         }
     }
 
+    private void ClearSelectedRent() {
+        selectedRow = -1;
+        lblSelected.setText("Nenhum aluguel selecionado!");
+        btnEndRent.setEnabled(false);
+        btnDelete.setEnabled(false);
+
+        cmbBookID.setSelectedIndex(-1);
+        cmbUserID.setSelectedIndex(-1);
+    }
+
     public void DoSearch() {
         try {
             Rented search = new Rented();
@@ -207,14 +218,27 @@ public class ViewRent extends JFrame implements ActionListener, MouseListener {
         }
     }
 
-    private void ClearSelectedRent() {
-        selectedRow = -1;
-        lblSelected.setText("Nenhum aluguel selecionado!");
-        btnEndRent.setEnabled(false);
-        btnDelete.setEnabled(false);
+    private void EndRent() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = format.format(new Date());
 
-        cmbBookID.setSelectedIndex(-1);
-        cmbUserID.setSelectedIndex(-1);
+        int option = JOptionPane.showConfirmDialog(null, "Registrar devolução do livro '" +
+                        table.getValueAt(selectedRow, 0) + "' para o dia de hoje (" + dateString + ")?",
+                "Bücherei", JOptionPane.YES_NO_OPTION);
+
+        if (option == JOptionPane.YES_OPTION) {
+            Rented operation = new Rented();
+
+            int user = Integer.parseInt(cmbUserID.getSelectedItem().toString());
+            int book = Integer.parseInt(cmbBookID.getSelectedItem().toString());
+
+            int id = operation.GetRentID(user, book);
+
+            operation.setDateReturned(dateString);
+            operation.AddReturnDate(id);
+
+            DoSearch();
+        }
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -222,7 +246,7 @@ public class ViewRent extends JFrame implements ActionListener, MouseListener {
             DoSearch();
             ClearSelectedRent();
         } else if (e.getSource() == btnEndRent) {
-            //message dialog com a data de hoje e devolver o livro
+            EndRent();
         } else if (e.getSource() == btnDelete) {
             DeleteRent();
         } else if (e.getSource() == btnExit) {

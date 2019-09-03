@@ -37,7 +37,7 @@ public class Start extends JFrame implements ActionListener {
         loading.setBounds(wConfig.getWidth() - 600, wConfig.getHeight() - 150, wConfig.getWidth() / 2, 30);
         add(loading);
 
-        lblAuthors = new JLabel("By: André Creppe & Thiago Dalla Dea - (CTI@2019)");
+        lblAuthors = new JLabel("Trabalho de JAVA - 3° Bimestre 73/83A - CTI@2019");
         lblAuthors.setBounds(wConfig.getWidth() - 550, wConfig.getHeight() - 120, 350, 50);
         lblAuthors.setFont(wConfig.getFont(15, true));
         add(lblAuthors);
@@ -115,14 +115,14 @@ public class Start extends JFrame implements ActionListener {
         add(txtPassword);
 
         btnLogin = new JButton("Entrar");
-        btnLogin.setBounds(170, 300, 160, 40);
+        btnLogin.setBounds(180, 300, 160, 40);
         btnLogin.setFont(wConfig.getFont(25, true));
         btnLogin.addActionListener(this);
         btnLogin.setMnemonic('E');
         add(btnLogin);
 
         btnClear = new JButton("Limpar");
-        btnClear.setBounds(430, 300, 160, 40);
+        btnClear.setBounds(440, 300, 160, 40);
         btnClear.setFont(wConfig.getFont(25, true));
         btnClear.addActionListener(this);
         btnClear.setMnemonic('L');

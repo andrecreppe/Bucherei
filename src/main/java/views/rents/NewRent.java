@@ -59,7 +59,7 @@ public class NewRent extends JFrame implements ActionListener {
 
             cmbBooksID = new JComboBox();
             cmbBooksID.setVisible(false);
-            for (int i = 0; i < books.size(); i += 7) {
+            for (int i = 0; i < books.size(); i += 8) {
                 cmbBooksID.addItem(books.get(i));
             }
             add(cmbBooksID);
@@ -67,7 +67,7 @@ public class NewRent extends JFrame implements ActionListener {
             cmbBooks = new JComboBox();
             cmbBooks.setBounds(350, firstY, 200, 30);
             int index = -1;
-            for (int i = 0; i < books.size(); i += 7) {
+            for (int i = 0; i < books.size(); i += 8) {
                 cmbBooks.addItem(books.get(1 + i));
 
                 if (books.get(i + 1).equals(bookName + "")) {

@@ -193,13 +193,7 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
     }
 
     private void DeleteSection() {
-        Sections operation = new Sections();
-
-        String name = table.getValueAt(selectedRow, 0).toString();
-        String description = table.getValueAt(selectedRow, 1).toString();
-
-        int id = operation.GetSectionID(name, description);
-        String qtd = operation.GetQuantity(id);
+        String qtd = table.getValueAt(selectedRow, 3).toString();
 
         if(Integer.parseInt(qtd) > 0) {
             JOptionPane.showMessageDialog(null,
@@ -213,6 +207,13 @@ public class ViewSection extends JFrame implements ActionListener, MouseListener
                 "Bücherei", JOptionPane.YES_NO_OPTION);
 
         if (option == JOptionPane.YES_OPTION) {
+            Sections operation = new Sections();
+
+            String name = table.getValueAt(selectedRow, 0).toString();
+            String description = table.getValueAt(selectedRow, 1).toString();
+
+            int id = operation.GetSectionID(name, description);
+
             operation.Delete(id);
 
             ClearSelectedSection();

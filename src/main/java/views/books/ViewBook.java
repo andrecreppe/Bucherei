@@ -242,6 +242,17 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
     }
 
     private void DeleteBook() {
+        Books search = new Books();
+        int sendID = search.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
+
+        String qtd = search.Select(sendID).get(0);
+
+        if(Integer.parseInt(qtd) > 0) {
+            JOptionPane.showMessageDialog(null,
+                    "Ação bloqueada!\nNão é possivel deletar um livro com aluguéis cadastrados!");
+            return;
+        }
+
         int option = JOptionPane.showConfirmDialog(null,
                 "Deseja realmente deletar '" + table.getValueAt(selectedRow, 0) + "'?\nEssa ação não poderá ser desfeita.",
                 "Bücherei", JOptionPane.YES_NO_OPTION);
