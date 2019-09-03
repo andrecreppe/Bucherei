@@ -2,7 +2,7 @@ package views.user;
 
 import tools.*;
 import views.*;
-import views.user.books.ViewBooks;
+import views.user.books.ViewBook;
 import views.user.rents.ViewMyRents;
 
 import javax.imageio.ImageIO;
@@ -137,8 +137,8 @@ public class UserMenu extends JFrame implements ActionListener, MenuListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == viewRented) {
             new ViewMyRents(this);
-        } else if(e.getSource() == viewBooks) {
-            new ViewBooks(this);
+        } else if (e.getSource() == viewBooks) {
+            new ViewBook(this);
         }
 
         setVisible(false);

@@ -190,7 +190,7 @@ public class Rented {
         return search;
     }
 
-    public int GetUserManyBooks(int user) {
+    public int GetUserManyBooks(int id) {
         sql = "";
         result = null;
 
@@ -200,11 +200,44 @@ public class Rented {
             sql = "SELECT COUNT(*) as qtd FROM rented WHERE id_user=?";
 
             querry = localhost.GetConnection().prepareStatement(sql);
-            querry.setInt(1, user);
+            querry.setInt(1, id);
             result = querry.executeQuery();
 
             while (result.next()) {
                 search = result.getInt("qtd");
+            }
+
+            querry.close();
+        } catch (Exception e) {
+            String msg = "Oops, aconteceu algum erro!";
+            msg += "\n\nErro na pesquisa: " + e.getMessage();
+
+            JOptionPane.showMessageDialog(null, msg);
+        }
+
+        return search;
+    }
+
+    public ArrayList<String> GetUserRents(int id) {
+        sql = "";
+        result = null;
+        search = null;
+
+        try {
+            sql = "SELECT * FROM rented WHERE id_user=?";
+
+            querry = localhost.GetConnection().prepareStatement(sql);
+            querry.setInt(1, id);
+
+            result = querry.executeQuery();
+
+            search = new ArrayList<String>();
+            while (result.next()) {
+                search.add(result.getString("id"));
+                search.add(result.getString("id_user"));
+                search.add(result.getString("id_book"));
+                search.add(result.getString("date_rented"));
+                search.add(result.getString("date_returned"));
             }
 
             querry.close();
