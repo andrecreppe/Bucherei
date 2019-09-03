@@ -5,8 +5,10 @@ import tools.*;
 import views.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 public class NewBook extends JFrame implements ActionListener {
     //Control Variables
@@ -15,12 +17,12 @@ public class NewBook extends JFrame implements ActionListener {
     private int incY, firstY;
 
     //UI Objects
-    private JLabel lblTitle, lblAuthor, lblYear, lblPublisher, lblPages, lblSection;
-    private JTextField txtTitle, txtAuthor, txtPublisher;
+    private JLabel lblTitle, lblAuthor, lblYear, lblPublisher, lblPages, lblSection, lblImagePath, lblImagePreview;
+    private JTextField txtTitle, txtAuthor, txtPublisher, txtImagePath;
     private JSpinner numYear, numPages;
     private SpinnerModel yearModel, pagesModel;
     private JComboBox cmbSections, cmbSectionsID;
-    private JButton btnAdd, btnClear, btnCancel;
+    private JButton btnAdd, btnClear, btnCancel, btnAddImage, btnRemoveImage;
 
     public NewBook(AdminMenu menu) {
         //Window setup
@@ -35,7 +37,7 @@ public class NewBook extends JFrame implements ActionListener {
 
         adminMenu = menu;
 
-        firstY = 20;
+        firstY = 25;
         incY = 55;
 
         InitializeUI();
@@ -119,7 +121,32 @@ public class NewBook extends JFrame implements ActionListener {
             }
             add(cmbSectionsID);
 
-            firstY += incY + 25;
+            firstY += incY;
+
+            lblImagePreview = new JLabel("<html><body>Nenhuma imagem selecionada!<br><br>Utilize o campo de caminho para adicionar uma.</body></html>");
+            lblImagePreview.setBounds(30, 100, 150, 150);
+            add(lblImagePreview);
+
+            lblImagePath = new JLabel("Caminho da imagem:");
+            lblImagePath.setBounds(220, firstY, 150, 30);
+            add(lblImagePath);
+
+            txtImagePath = new JTextField();
+            txtImagePath.setBounds(350, firstY, 150, 30);
+            txtImagePath.setEnabled(false);
+            add(txtImagePath);
+
+            btnAddImage = new JButton("...");
+            btnAddImage.setBounds(510, firstY, 30, 30);
+            btnAddImage.addActionListener(this);
+            add(btnAddImage);
+
+            btnRemoveImage = new JButton("X");
+            btnRemoveImage.setBounds(550, firstY, 45, 30);
+            btnRemoveImage.addActionListener(this);
+            add(btnRemoveImage);
+
+            firstY += incY + 5;
 
             btnAdd = new JButton("Adicionar");
             btnAdd.setBounds(220, firstY, 100, 30);
@@ -155,6 +182,8 @@ public class NewBook extends JFrame implements ActionListener {
         numYear.setValue(0);
         numPages.setValue(0);
         cmbSections.setSelectedIndex(-1);
+
+        DeselectImage();
     }
 
     private void Exit() {
@@ -184,6 +213,7 @@ public class NewBook extends JFrame implements ActionListener {
             inclusion.setName(txtTitle.getText());
             inclusion.setAuthor(txtAuthor.getText());
             inclusion.setPublisher(txtPublisher.getText());
+            inclusion.setPath(txtImagePath.getText());
             inclusion.setPages(pages);
             inclusion.setYear(year);
             inclusion.setSection(id);
@@ -229,6 +259,51 @@ public class NewBook extends JFrame implements ActionListener {
         return fieldNumber;
     }
 
+    private void SelectImage() {
+        JFileChooser fc = new JFileChooser("C:\\");
+
+        fc.setDialogTitle("Escolha uma foto para o Livro '" + txtTitle.getText() + "'");
+        fc.setMultiSelectionEnabled(false);
+        fc.addChoosableFileFilter(new BetterFileFilter(".png", "Portable Network Graphics"));
+        fc.addChoosableFileFilter(new BetterFileFilter(".jpg", "Joint Photographics Experts Group"));
+        fc.addChoosableFileFilter(new BetterFileFilter(".jpeg", "Joint Photographics Experts Group"));
+        fc.addChoosableFileFilter(new BetterFileFilter(".gif", "Graphic Interchange Format"));
+
+        int res = fc.showOpenDialog(null);
+
+        if (res == JFileChooser.APPROVE_OPTION) {
+            File arquivo = fc.getSelectedFile();
+
+            String Imc = arquivo.getPath();
+            txtImagePath.setText(arquivo.getPath());
+
+            ImageIcon imagem = new ImageIcon(Imc);
+            Image img = imagem.getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT);
+
+            lblImagePreview.setText("");
+            lblImagePreview = null;
+            lblImagePreview = new JLabel();
+            lblImagePreview.setIcon(new ImageIcon(img));
+            lblImagePreview.setBounds(30, 100, 150, 150);
+            add(lblImagePreview);
+
+            repaint();
+        } else {
+            JOptionPane.showMessageDialog(null, "Você não selecionou nenhuma foto!",
+                    "Bücherei", JOptionPane.OK_OPTION);
+        }
+    }
+
+    private void DeselectImage() {
+        if(!txtImagePath.getText().equals("")) {
+            txtImagePath.setText("");
+
+            remove(lblImagePreview);
+
+            repaint();
+        }
+    }
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
             AddNewBook();
@@ -238,6 +313,10 @@ public class NewBook extends JFrame implements ActionListener {
             Exit();
         } else if (e.getSource() == cmbSections) {
             cmbSectionsID.setSelectedIndex(cmbSections.getSelectedIndex());
+        } else if (e.getSource() == btnAddImage) {
+            SelectImage();
+        } else if (e.getSource() == btnRemoveImage) {
+            DeselectImage();
         }
     }
 }

@@ -1,10 +1,8 @@
 package views;
 
 import tools.*;
-import tools.reports.RelatorioTeste;
 import views.books.*;
-import views.rents.NewRent;
-import views.rents.ViewRent;
+import views.rents.*;
 import views.sections.*;
 import views.user.*;
 
@@ -100,11 +98,11 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             viewRented.addActionListener(this);
             rented.add(viewRented);
 
-            //Menu 'relatorio'
-            report = new JMenu("Relatório");
-            report.setMnemonic('R');
-            report.addMenuListener(this);
-            bar.add(report);
+//            //Menu 'relatorio'
+//            report = new JMenu("Relatório");
+//            report.setMnemonic('R');
+//            report.addMenuListener(this);
+//            bar.add(report);
 
             //Menu 'sobre'
             about = new JMenu("Desenvolvedores");
@@ -202,9 +200,10 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
                 startMenu.setVisible(true);
                 dispose();
             }
-        } else if (e.getSource() == report) {
-            new RelatorioTeste();
         }
+//        else if (e.getSource() == report) {
+//            System.out.println("fazer relatório?");
+//        }
     }
 
     public void menuDeselected(MenuEvent e) {

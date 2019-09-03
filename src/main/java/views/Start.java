@@ -159,7 +159,7 @@ public class Start extends JFrame implements ActionListener {
         if (resp.get(0).equals("1")) {//Admin
             new AdminMenu(resp.get(1) + " " + resp.get(2), this);
         } else { //Normal user
-            System.out.println("Normal guy");
+            new UserMenu(resp.get(1) + " " + resp.get(2), this);
         }
 
         setVisible(false);
