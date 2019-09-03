@@ -1,9 +1,9 @@
-package views.rents;
+package views.admin.rents;
 
 import com.toedter.calendar.*;
 import connections.*;
 import tools.*;
-import views.*;
+import views.admin.AdminMenu;
 
 import javax.swing.*;
 import java.awt.event.*;

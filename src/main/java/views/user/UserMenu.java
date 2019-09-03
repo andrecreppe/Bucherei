@@ -1,19 +1,18 @@
-package views;
+package views.user;
 
 import tools.*;
-import views.books.*;
-import views.rents.*;
-import views.sections.*;
-import views.user.*;
+import views.*;
+import views.user.books.ViewBooks;
+import views.user.rents.ViewMyRents;
 
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 
-public class AdminMenu extends JFrame implements ActionListener, MenuListener {
+public class UserMenu extends JFrame implements ActionListener, MenuListener {
     //Control Variables
     private WindowConfiguration wConfig;
     private BufferedImage imageLoader;
@@ -22,15 +21,14 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     //UI Objects
     private JLabel creppe, dea, bucherei;
     private JMenuBar bar;
-    private JMenu books, sections, users, rented, about, logout, report;
-    private JMenuItem viewBooks, viewSections, viewUsers, viewRented;
-    private JMenuItem newBook, newSection, newUser;
+    private JMenu books, rented, about, logout;
+    private JMenuItem viewBooks, viewRented;
     private JPanel developers;
     private JLabel lblCreppe, lblDea;
 
-    public AdminMenu(String name, Start login) {
+    public UserMenu(String name, Start login) {
         //Window setup
-        super("Bücherei: " + name + " (admin)");
+        super("Bücherei: " + name + " (user)");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -51,7 +49,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             //MenuBar setup
             bar = new JMenuBar();
             setJMenuBar(bar);
-            getContentPane().setBackground(Color.LIGHT_GRAY);
+            getContentPane().setBackground(new Color(226, 255, 217));
 
             //Menu 'livros'
             books = new JMenu("Livros");
@@ -61,48 +59,15 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             viewBooks = new JMenuItem("Pesquisa");
             viewBooks.addActionListener(this);
             books.add(viewBooks);
-            newBook = new JMenuItem("Cadastrar");
-            newBook.addActionListener(this);
-            books.add(newBook);
-
-            //Menu 'secao'
-            sections = new JMenu("Seção");
-            sections.setMnemonic('S');
-            bar.add(sections);
-            //Add menu items
-            viewSections = new JMenuItem("Pesquisa");
-            viewSections.addActionListener(this);
-            sections.add(viewSections);
-            newSection = new JMenuItem("Cadastrar");
-            newSection.addActionListener(this);
-            sections.add(newSection);
-
-            //Menu 'usuarios'
-            users = new JMenu("Usuários");
-            users.setMnemonic('U');
-            bar.add(users);
-            //Add menu items
-            viewUsers = new JMenuItem("Pesquisa");
-            viewUsers.addActionListener(this);
-            users.add(viewUsers);
-            newUser = new JMenuItem("Cadastrar");
-            newUser.addActionListener(this);
-            users.add(newUser);
 
             //Menu 'aluguel'
-            rented = new JMenu("Aluguel");
+            rented = new JMenu("Meus aluguéis");
             rented.setMnemonic('A');
             bar.add(rented);
             //Add menu items
             viewRented = new JMenuItem("Pesquisa");
             viewRented.addActionListener(this);
             rented.add(viewRented);
-
-//            //Menu 'relatorio'
-//            report = new JMenu("Relatório");
-//            report.setMnemonic('R');
-//            report.addMenuListener(this);
-//            bar.add(report);
 
             //Menu 'sobre'
             about = new JMenu("Desenvolvedores");
@@ -170,20 +135,10 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == viewBooks) {
-            new ViewBook(this);
-        } else if (e.getSource() == newBook) {
-            new NewBook(this);
-        } else if (e.getSource() == viewSections) {
-            new ViewSection(this);
-        } else if (e.getSource() == newSection) {
-            new NewSection(this);
-        } else if (e.getSource() == viewUsers) {
-            new ViewUser(this);
-        } else if (e.getSource() == newUser) {
-            new NewUser(this);
-        } else if (e.getSource() == viewRented) {
-            new ViewRent(this);
+        if (e.getSource() == viewRented) {
+            new ViewMyRents(this);
+        } else if(e.getSource() == viewBooks) {
+            new ViewBooks(this);
         }
 
         setVisible(false);
@@ -201,9 +156,6 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
                 dispose();
             }
         }
-//        else if (e.getSource() == report) {
-//            System.out.println("fazer relatório?");
-//        }
     }
 
     public void menuDeselected(MenuEvent e) {
@@ -215,6 +167,6 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     }
 
     public static void main(String[] args) {
-        new AdminMenu("Falsiano Fakeson", null);
+        new UserMenu("Falsiano Fakeson", null);
     }
 }

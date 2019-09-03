@@ -1,16 +1,16 @@
-package views.books;
+package views.admin.user;
 
 import connections.*;
 import tools.*;
-import views.*;
-import views.rents.NewRent;
+import views.admin.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.swing.text.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class ViewBook extends JFrame implements ActionListener, ItemListener, MouseListener {
+public class ViewUser extends JFrame implements ActionListener, ItemListener, MouseListener {
     //Control Variables
     private WindowConfiguration wConfig;
     private AdminMenu adminMenu;
@@ -22,15 +22,15 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
     private JScrollPane dataPanel;
     private JLabel lblSearch, lblSelected;
     private JTextField txtSearch;
-    private JComboBox cmbSections;
-    private JSpinner numSearch;
-    private JRadioButton radTitle, radAuthor, radPublisher, radYear, radSection, radAll;
-    private ButtonGroup grpSearch;
-    private JButton btnEdit, btnExit, btnSearch, btnDelete, btnRent;
+    private JFormattedTextField mskCPF;
+    private MaskFormatter mskMaker;
+    private JButton btnEdit, btnExit, btnSearch, btnDelete;
+    private JRadioButton radName, radSurname, radCPF, radAdmin, radAll, radIsAdmin, radIsUser;
+    private ButtonGroup grpSearch, grpAdminSearch;
 
-    public ViewBook(AdminMenu menu) {
+    public ViewUser(AdminMenu menu) {
         //Window setup
-        super("Bücherei: Consulta de Livros");
+        super("Bücherei: Consulta de Usuários");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -50,21 +50,18 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
     }
 
     private void InitializeUI() {
-        Sections sectionsSearch = new Sections();
-        ArrayList<String> sections = sectionsSearch.Select();
-
         try {
             model = new DefaultTableModel() {
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             };
-            model.addColumn("Título");
-            model.addColumn("Autor");
-            model.addColumn("Editora");
-            model.addColumn("Ano");
-            model.addColumn("Páginas");
-            model.addColumn("Seção");
+            model.addColumn("Nome");
+            model.addColumn("Sobrenome");
+            model.addColumn("CPF");
+            model.addColumn("Email");
+            model.addColumn("Admin?");
+            model.addColumn("QTD ALUGADOS");
 
             table = new JTable(model);
             table.addMouseListener(this);
@@ -95,87 +92,83 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
             btnSearch.addActionListener(this);
             add(btnSearch);
 
-            SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 2019, 1);
-            numSearch = new JSpinner();
-            numSearch.setBounds(660, 130, 80, 25);
-            numSearch.setVisible(false);
-            add(numSearch);
+            radIsAdmin = new JRadioButton("Admin");
+            radIsAdmin.setBounds(630, 130, 80, 25);
+            radIsAdmin.setVisible(false);
+            add(radIsAdmin);
 
-            cmbSections = new JComboBox();
-            cmbSections.setBounds(620, 130, 160, 25);
-            for (int i = 0; i < sections.size(); i += 4) {
-                cmbSections.addItem(sections.get(i + 1));
-            }
-            cmbSections.setVisible(false);
-            add(cmbSections);
+            radIsUser = new JRadioButton("Cliente");
+            radIsUser.setBounds(710, 130, 100, 25);
+            radIsUser.setVisible(false);
+            add(radIsUser);
+
+            grpAdminSearch = new ButtonGroup();
+            grpAdminSearch.add(radIsAdmin);
+            grpAdminSearch.add(radIsUser);
+
+            mskCPF = new JFormattedTextField();
+            mskCPF.setBounds(650, 130, 100, 25);
+            mskCPF.setVisible(false);
+            add(mskCPF);
+
+            mskMaker = new MaskFormatter("###.###.###-##");
+            mskMaker.setPlaceholderCharacter('_');
+            mskMaker.install(mskCPF);
 
             lblSearch = new JLabel("Filtro por:");
             lblSearch.setBounds(665, 5, 100, 30);
             add(lblSearch);
 
-            radTitle = new JRadioButton("Título");
-            radTitle.setBounds(620, 35, 80, 30);
-            radTitle.addItemListener(this);
-            add(radTitle);
+            radName = new JRadioButton("Nome");
+            radName.setBounds(620, 35, 80, 30);
+            radName.addItemListener(this);
+            add(radName);
 
-            radAuthor = new JRadioButton("Autor");
-            radAuthor.setBounds(700, 35, 100, 30);
-            radAuthor.addItemListener(this);
-            add(radAuthor);
+            radSurname = new JRadioButton("Sobrenome");
+            radSurname.setBounds(700, 35, 100, 30);
+            radSurname.addItemListener(this);
+            add(radSurname);
 
-            radPublisher = new JRadioButton("Editora");
-            radPublisher.setBounds(620, 65, 70, 30);
-            radPublisher.addItemListener(this);
-            add(radPublisher);
+            radCPF = new JRadioButton("CPF");
+            radCPF.setBounds(620, 65, 70, 30);
+            radCPF.addItemListener(this);
+            add(radCPF);
 
-            radSection = new JRadioButton("Seção");
-            radSection.setBounds(700, 65, 100, 30);
-            radSection.addItemListener(this);
-            add(radSection);
-
-            radYear = new JRadioButton("Ano");
-            radYear.setBounds(620, 95, 70, 30);
-            radYear.addItemListener(this);
-            add(radYear);
+            radAdmin = new JRadioButton("Tipo");
+            radAdmin.setBounds(700, 65, 100, 30);
+            radAdmin.addItemListener(this);
+            add(radAdmin);
 
             radAll = new JRadioButton("TODOS");
-            radAll.setBounds(700, 95, 100, 30);
+            radAll.setBounds(660, 95, 100, 30);
             radAll.addItemListener(this);
             radAll.setSelected(true);
             add(radAll);
 
             grpSearch = new ButtonGroup();
-            grpSearch.add(radTitle);
-            grpSearch.add(radAuthor);
-            grpSearch.add(radPublisher);
-            grpSearch.add(radSection);
-            grpSearch.add(radYear);
+            grpSearch.add(radName);
+            grpSearch.add(radSurname);
+            grpSearch.add(radCPF);
+            grpSearch.add(radAdmin);
             grpSearch.add(radAll);
 
-            lblSelected = new JLabel("Nenhum livro selecionado!");
+            lblSelected = new JLabel("Nenhum usuário selecionado!");
             lblSelected.setBounds(620, 260, 200, 20);
             add(lblSelected);
 
-            btnEdit = new JButton("Editar livro");
+            btnEdit = new JButton("Editar usuário");
             btnEdit.setBounds(620, 280, 160, 25);
             btnEdit.setMnemonic('E');
             btnEdit.setEnabled(false);
             btnEdit.addActionListener(this);
             add(btnEdit);
 
-            btnDelete = new JButton("Deletar livro");
+            btnDelete = new JButton("Deletar usuário");
             btnDelete.setBounds(620, 310, 160, 25);
             btnDelete.setMnemonic('D');
             btnDelete.setEnabled(false);
             btnDelete.addActionListener(this);
             add(btnDelete);
-
-            btnRent = new JButton("Alugar livro");
-            btnRent.setBounds(620, 340, 160, 25);
-            btnRent.setMnemonic('A');
-            btnRent.setEnabled(false);
-            btnRent.addActionListener(this);
-            add(btnRent);
 
             btnExit = new JButton("Sair");
             btnExit.setBounds(620, 428, 160, 30);
@@ -191,34 +184,30 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
     }
 
     public void DoSearch() {
-        Books search = new Books();
-        Sections section = new Sections();
+        Users search = new Users();
         ArrayList<String> items;
 
         String searchText = txtSearch.getText();
         int searchOption = 0;
 
-        if (radTitle.isSelected()) {
+        if (radName.isSelected()) {
             searchOption = 1;
-        } else if (radAuthor.isSelected()) {
+        } else if (radSurname.isSelected()) {
             searchOption = 2;
-        } else if (radYear.isSelected()) {
+        } else if (radCPF.isSelected()) {
             searchOption = 3;
 
-            int val = Integer.parseInt(numSearch.getValue().toString());
-            searchText = val + "";
-        } else if (radPublisher.isSelected()) {
+            searchText = mskCPF.getText().replace(".", "");
+            searchText = searchText.replace("-", "");
+        } else if (radAdmin.isSelected()) {
             searchOption = 4;
-        } else if (radSection.isSelected() && cmbSections.getSelectedIndex() > -1) {
-            searchOption = 5;
 
-            items = section.Select(cmbSections.getSelectedItem().toString(), 1);
-            searchText = items.get(0);
-
-            System.out.println(searchText);
+            if (radIsAdmin.isSelected()) {
+                searchText = "1";
+            } else {
+                searchText = "0";
+            }
         }
-
-        items = null;
 
         if (searchOption == 0) {
             items = search.Select();
@@ -228,28 +217,34 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
 
         model.setRowCount(0);
 
-        for (int i = 0; i < items.size(); i += 8) {
+        for (int i = 0; i < items.size(); i += 7) {
             Object[] data = {
                     items.get(i + 1),
                     items.get(i + 2),
                     items.get(i + 3),
                     items.get(i + 4),
-                    items.get(i + 5),
-                    section.Select(Integer.parseInt(items.get(i + 7))).get(1)
+                    items.get(i + 5).equals("1") ? "Sim" : "Não",
+                    GetUserRentedBooks(Integer.parseInt(items.get(i))),
             };
             model.addRow(data);
         }
     }
 
-    private void DeleteBook() {
-        Books search = new Books();
-        int sendID = search.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
+    private int GetUserRentedBooks(int userID) {
+        Rented userRentedBooks = new Rented();
 
-        String qtd = search.Select(sendID).get(0);
+        int qtd = userRentedBooks.GetUserManyBooks(userID);
+        ;
+
+        return qtd;
+    }
+
+    private void DeleteUser() {
+        String qtd = table.getValueAt(selectedRow, 5).toString();
 
         if(Integer.parseInt(qtd) > 0) {
             JOptionPane.showMessageDialog(null,
-                    "Ação bloqueada!\nNão é possivel deletar um livro com aluguéis cadastrados!");
+                    "Ação bloqueada!\nNão é possivel deletar um usuário com aluguéis cadastrados!");
             return;
         }
 
@@ -258,49 +253,34 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
                 "Bücherei", JOptionPane.YES_NO_OPTION);
 
         if (option == JOptionPane.YES_OPTION) {
-            Books operation = new Books();
+            Users operation = new Users();
 
-            int id = operation.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
-            operation.Delete(id);
+            int userId = operation.GetUserID(table.getValueAt(selectedRow, 2).toString());
+            operation.Delete(userId);
 
-            ClearSelectedBook();
+            ClearSelectedUser();
 
             DoSearch();
         }
     }
 
-    private void SendBookID(int localtion) {
-        Books search = new Books();
-        int sendID = search.GetBookID(table.getValueAt(selectedRow, 0).toString(), table.getValueAt(selectedRow, 1).toString());
-        String sendName = table.getValueAt(selectedRow, 0).toString();
-
-        if(localtion == 1) { //edit
-            new EditBook(this, sendID, table.getValueAt(selectedRow, 5).toString());
-        } else if(localtion == 2) { //rent
-            new NewRent(adminMenu, sendName);
-        }
-
-        dispose();
-    }
-
-    private void ClearSelectedBook() {
+    private void ClearSelectedUser() {
         selectedRow = -1;
-        lblSelected.setText("Nenhum livro selecionado!");
+        lblSelected.setText("Nenhum usuário selecionado!");
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
-        btnRent.setEnabled(false);
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSearch) {
             DoSearch();
-            ClearSelectedBook();
+            ClearSelectedUser();
         } else if (e.getSource() == btnEdit) {
-           SendBookID(1);
+            Users search = new Users();
+            new EditUser(this, search.GetUserID(table.getValueAt(selectedRow, 2).toString()));
+            dispose();
         } else if (e.getSource() == btnDelete) {
-            DeleteBook();
-        } else if(e.getSource() == btnRent) {
-            SendBookID(2);
+            DeleteUser();
         } else if (e.getSource() == btnExit) {
             adminMenu.setVisible(true);
             dispose();
@@ -314,16 +294,17 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
             txtSearch.setEnabled(true);
         }
 
-        cmbSections.setVisible(false);
-        numSearch.setVisible(false);
+        radIsAdmin.setVisible(false);
+        radIsUser.setVisible(false);
+        mskCPF.setVisible(false);
         txtSearch.setVisible(false);
 
-        if (e.getSource() == radSection) {
-            cmbSections.setVisible(true);
-            cmbSections.setSelectedIndex(-1);
-        } else if (e.getSource() == radYear) {
-            numSearch.setVisible(true);
-            numSearch.setValue(0);
+        if (e.getSource() == radAdmin) {
+            radIsAdmin.setVisible(true);
+            radIsAdmin.setSelected(true);
+            radIsUser.setVisible(true);
+        } else if (e.getSource() == radCPF) {
+            mskCPF.setVisible(true);
         } else {
             txtSearch.setVisible(true);
             txtSearch.setText("");
@@ -333,10 +314,9 @@ public class ViewBook extends JFrame implements ActionListener, ItemListener, Mo
     public void mouseClicked(MouseEvent e) {
         int row = table.rowAtPoint(e.getPoint());
 
-        lblSelected.setText("Livro '" + table.getValueAt(row, 0) + "' selecionado!");
+        lblSelected.setText("Usuário '" + table.getValueAt(row, 0) + "' selecionado!");
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
-        btnRent.setEnabled(true);
         selectedRow = row;
     }
 

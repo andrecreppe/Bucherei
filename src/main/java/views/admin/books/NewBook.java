@@ -1,7 +1,8 @@
-package views.books;
+package views.admin.books;
 
 import connections.*;
 import tools.*;
+import views.admin.AdminMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,12 +10,11 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
-public class EditBook extends JFrame implements ActionListener {
+public class NewBook extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
-    private ViewBook viewMenu;
-    private int incY, firstY, bookID;
-    private String sectionName;
+    private AdminMenu adminMenu;
+    private int incY, firstY;
 
     //UI Objects
     private JLabel lblTitle, lblAuthor, lblYear, lblPublisher, lblPages, lblSection, lblImagePath, lblImagePreview;
@@ -24,9 +24,9 @@ public class EditBook extends JFrame implements ActionListener {
     private JComboBox cmbSections, cmbSectionsID;
     private JButton btnAdd, btnClear, btnCancel, btnAddImage, btnRemoveImage;
 
-    public EditBook(ViewBook menu, int id, String section) {
+    public NewBook(AdminMenu menu) {
         //Window setup
-        super("Bücherei: Editar Livro");
+        super("Bücherei: Novo Livro");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -35,16 +35,12 @@ public class EditBook extends JFrame implements ActionListener {
         wConfig = new WindowConfiguration();
         setBounds(wConfig.getCoordinateX(), wConfig.getCoordinateY(), wConfig.getWidth(), wConfig.getHeight());
 
-        viewMenu = menu;
-        bookID = id;
-        sectionName = section;
+        adminMenu = menu;
 
         firstY = 25;
         incY = 55;
 
         InitializeUI();
-
-        SetFields();
 
         setVisible(true);
     }
@@ -152,7 +148,7 @@ public class EditBook extends JFrame implements ActionListener {
 
             firstY += incY + 5;
 
-            btnAdd = new JButton("Alterar");
+            btnAdd = new JButton("Adicionar");
             btnAdd.setBounds(220, firstY, 100, 30);
             btnAdd.setMnemonic('A');
             btnAdd.addActionListener(this);
@@ -186,31 +182,16 @@ public class EditBook extends JFrame implements ActionListener {
         numYear.setValue(0);
         numPages.setValue(0);
         cmbSections.setSelectedIndex(-1);
-    }
 
-    private void SetFields() {
-        Books books = new Books();
-
-        ArrayList<String> book = books.Select(bookID);
-
-        txtTitle.setText(book.get(1));
-        txtAuthor.setText(book.get(2));
-        txtPublisher.setText(book.get(3));
-        numYear.setValue(Integer.parseInt(book.get(4)));
-        numPages.setValue(Integer.parseInt(book.get(5)));
-
-        cmbSections.setSelectedItem(sectionName);
-
-        txtImagePath.setText(book.get(6));
-        GetImageFromPath(book.get(6));
+        DeselectImage();
     }
 
     private void Exit() {
-        viewMenu.setVisible(true);
+        adminMenu.setVisible(true);
         dispose();
     }
 
-    private void EditThisBook() {
+    private void AddNewBook() {
         int validation = AllFieldsOK();
 
         if (validation == 0) {
@@ -232,11 +213,12 @@ public class EditBook extends JFrame implements ActionListener {
             inclusion.setName(txtTitle.getText());
             inclusion.setAuthor(txtAuthor.getText());
             inclusion.setPublisher(txtPublisher.getText());
+            inclusion.setPath(txtImagePath.getText());
             inclusion.setPages(pages);
             inclusion.setYear(year);
             inclusion.setSection(id);
 
-            inclusion.Update(bookID);
+            inclusion.Insert();
 
             Exit();
         } else {
@@ -312,27 +294,8 @@ public class EditBook extends JFrame implements ActionListener {
         }
     }
 
-    private void GetImageFromPath(String path) {
-        if(!txtImagePath.getText().equals("")) {
-            File arquivo = new File(txtImagePath.getText());
-
-            String Imc = arquivo.getPath();
-            txtImagePath.setText(arquivo.getPath());
-
-            ImageIcon imagem = new ImageIcon(Imc);
-            Image img = imagem.getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT);
-
-            lblImagePreview.setText("");
-            lblImagePreview = null;
-            lblImagePreview = new JLabel();
-            lblImagePreview.setIcon(new ImageIcon(img));
-            lblImagePreview.setBounds(30, 100, 150, 150);
-            add(lblImagePreview);
-        }
-    }
-
     private void DeselectImage() {
-        if (!txtImagePath.getText().equals("")) {
+        if(!txtImagePath.getText().equals("")) {
             txtImagePath.setText("");
 
             remove(lblImagePreview);
@@ -343,7 +306,7 @@ public class EditBook extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
-            EditThisBook();
+            AddNewBook();
         } else if (e.getSource() == btnClear) {
             ClearFields();
         } else if (e.getSource() == btnCancel) {

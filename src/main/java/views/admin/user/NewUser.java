@@ -1,8 +1,8 @@
-package views.user;
+package views.admin.user;
 
 import connections.*;
 import tools.*;
-import views.*;
+import views.admin.AdminMenu;
 
 import javax.imageio.*;
 import javax.swing.*;

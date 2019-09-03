@@ -1,17 +1,17 @@
-package views.sections;
+package views.admin.sections;
 
 import connections.*;
 import tools.*;
-import views.*;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
-public class NewSection extends JFrame implements ActionListener {
+public class EditSection extends JFrame implements ActionListener {
     //Control Variables
     private WindowConfiguration wConfig;
-    private AdminMenu adminMenu;
-    private int incY, firstY;
+    private ViewSection viewSection;
+    private int incY, firstY, sectionID;
 
     //UI Objects
     private JLabel lblName, lblDescription, lblActive;
@@ -21,9 +21,9 @@ public class NewSection extends JFrame implements ActionListener {
     private ButtonGroup radioGroup;
     private JButton btnAdd, btnClear, btnCancel;
 
-    public NewSection(AdminMenu menu) {
+    public EditSection(ViewSection view, int id) {
         //Window setup
-        super("Bücherei: Nova Seção");
+        super("Bücherei: Editar Seção");
         setLayout(null);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -32,12 +32,15 @@ public class NewSection extends JFrame implements ActionListener {
         wConfig = new WindowConfiguration();
         setBounds(wConfig.getCoordinateX(), wConfig.getCoordinateY(), wConfig.getWidth(), wConfig.getHeight());
 
-        adminMenu = menu;
+        viewSection = view;
+        sectionID = id;
 
         firstY = 60;
         incY = 100;
 
         InitializeUI();
+
+        SetFields();
 
         setVisible(true);
     }
@@ -81,7 +84,7 @@ public class NewSection extends JFrame implements ActionListener {
 
             firstY += incY + 25;
 
-            btnAdd = new JButton("Adicionar");
+            btnAdd = new JButton("Alterar");
             btnAdd.setBounds(220, firstY, 100, 30);
             btnAdd.setMnemonic('A');
             btnAdd.addActionListener(this);
@@ -108,6 +111,21 @@ public class NewSection extends JFrame implements ActionListener {
         ClearFields();
     }
 
+    private void SetFields() {
+        Sections section = new Sections();
+
+        ArrayList<String> sectionData = section.Select(sectionID);
+
+        txtName.setText(sectionData.get(1));
+        txaDescription.setText(sectionData.get(2));
+
+        if(sectionData.get(3).equals("1")) {
+            radActive.setSelected(true);
+        } else {
+            radUnactive.setSelected(true);
+        }
+    }
+
     private void ClearFields() {
         txtName.setText("");
         txaDescription.setText("");
@@ -115,15 +133,16 @@ public class NewSection extends JFrame implements ActionListener {
     }
 
     private void Exit() {
-        adminMenu.setVisible(true);
+        viewSection.setVisible(true);
         dispose();
     }
 
-    private void AddNewSection() {
+    private void EditThisSection() {
         int validation = AllFieldsOK();
 
         if (validation == 0) {
             Sections inclusion = new Sections();
+            MD5 crypto = new MD5();
 
             inclusion.setName(txtName.getText());
             inclusion.setDescription(txaDescription.getText());
@@ -134,7 +153,7 @@ public class NewSection extends JFrame implements ActionListener {
                 inclusion.setActive(false);
             }
 
-            inclusion.Insert();
+            inclusion.Update(sectionID);
 
             Exit();
         } else {
@@ -159,7 +178,7 @@ public class NewSection extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
-            AddNewSection();
+            EditThisSection();
         } else if (e.getSource() == btnClear) {
             ClearFields();
         } else if (e.getSource() == btnCancel) {

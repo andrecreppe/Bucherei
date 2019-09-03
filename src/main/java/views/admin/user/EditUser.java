@@ -1,4 +1,4 @@
-package views.user;
+package views.admin.user;
 
 import connections.*;
 import tools.*;

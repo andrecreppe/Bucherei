@@ -1,12 +1,11 @@
-package views.sections;
+package views.admin.sections;
 
 import connections.*;
 import tools.*;
-import views.*;
+import views.admin.AdminMenu;
 
 import javax.swing.*;
 import javax.swing.table.*;
-import javax.swing.text.*;
 import java.awt.event.*;
 import java.util.*;
 

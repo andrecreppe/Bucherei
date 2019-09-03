@@ -1,8 +1,8 @@
-package views.rents;
+package views.admin.rents;
 
 import connections.*;
 import tools.*;
-import views.*;
+import views.admin.AdminMenu;
 
 import javax.swing.*;
 import javax.swing.table.*;
