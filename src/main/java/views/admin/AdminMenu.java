@@ -1,16 +1,17 @@
 package views.admin;
 
 import tools.*;
-import tools.report.*;
 import views.*;
 import views.admin.books.*;
 import views.admin.rents.*;
+import views.admin.reports.*;
 import views.admin.sections.*;
 import views.admin.user.*;
 
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -25,7 +26,7 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
     private JLabel creppe, dea, bucherei;
     private JMenuBar bar;
     private JMenu books, sections, users, rented, about, logout, report;
-    private JMenuItem viewBooks, viewSections, viewUsers, viewRented;
+    private JMenuItem viewBooks, viewSections, viewUsers, viewRented, viewReport;
     private JMenuItem newBook, newSection, newUser;
     private JPanel developers;
     private JLabel lblCreppe, lblDea;
@@ -105,6 +106,10 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             report.setMnemonic('R');
             report.addMenuListener(this);
             bar.add(report);
+            //Add menu items
+            viewReport = new JMenuItem("Gerar");
+            viewReport.addActionListener(this);
+            report.add(viewReport);
 
             //Menu 'sobre'
             about = new JMenu("Desenvolvedores");
@@ -186,6 +191,8 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
             new NewUser(this);
         } else if (e.getSource() == viewRented) {
             new ViewRent(this);
+        } else if(e.getSource() == viewReport) {
+            new ViewReport(this);
         }
 
         setVisible(false);
@@ -202,9 +209,6 @@ public class AdminMenu extends JFrame implements ActionListener, MenuListener {
                 startMenu.setVisible(true);
                 dispose();
             }
-        }
-        else if (e.getSource() == report) {
-            new ReportGenerator().GenerateReport("books");
         }
     }
 

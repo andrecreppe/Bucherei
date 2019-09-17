@@ -27,7 +27,7 @@ public class ReportGenerator {
             jrRS = new JRResultSetDataSource(rs);
             parametros = new HashMap<String, String>();
 
-            String url = System.getProperty("user.dir") + "/src/main/java/tools/report/teste.jasper";
+            String url = System.getProperty("user.dir") + "/src/main/java/tools/report/" + table + ".jasper";
             JasperPrint impressao = JasperFillManager.fillReport(url, parametros, jrRS);
 
             JasperViewer viewer = new JasperViewer(impressao, false);
