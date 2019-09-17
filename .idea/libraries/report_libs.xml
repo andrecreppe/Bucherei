@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="report-libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/report/ant-apache-log4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/commons-beanutils-1.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/commons-digester-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/commons.collections-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/groovy-all_2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/itext-2.1.7.js4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/itext-pdfa-5.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/itextpdf-5.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/jasperreports-6.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/report/org.apache.commons.logging_1.1.1.v201101211721.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
